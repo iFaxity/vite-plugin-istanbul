@@ -1,10 +1,8 @@
 vite-plugin-istanbul
 ==========================
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ifaxity/vite-plugin-istanbul/E2E%20and%20Unit%20Tests?style=for-the-badge&logo=github)](https://github.com/iFaxity/vite-plugin-istanbul/actions)
-[![Codecov](https://img.shields.io/codecov/c/github/ifaxity/vite-plugin-istanbul?style=for-the-badge&logo=codecov)](https://codecov.io/gh/iFaxity/vite-plugin-istanbul)
+
 [![Codacy grade](https://img.shields.io/codacy/grade/a0c628b128c044269faefc1da74382f7?style=for-the-badge&logo=codacy)](https://app.codacy.com/manual/iFaxity/vite-plugin-istanbul/dashboard)
-[![Codacy coverage](https://img.shields.io/codacy/coverage/a0c628b128c044269faefc1da74382f7?style=for-the-badge&logo=codacy)](https://app.codacy.com/manual/iFaxity/vite-plugin-istanbul/dashboard)
 [![npm (scoped)](https://img.shields.io/npm/v/vite-plugin-istanbul?style=for-the-badge&logo=npm)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/vite-plugin-istanbul?label=Bundle%20size&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/vite-plugin-istanbul?label=Bundle%20size%20%28gzip%29&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
@@ -28,14 +26,17 @@ API
 import IstanbulPlugin from 'vite-plugin-istanbul';
 ```
 
-### [html( strings, ...values )](#html)
+### [IstanbulPlugin(( [ opts ] )](#istanbul-plugin)
 
-${method.description}
+Creates the vite plugin from a set of optional plugin options.
 
 **Returns:** Vite Plugin
 
 #### Parameters
-* `opts {ElementOptions}`-
+* `opts {IstanbulPluginOptions}` - Object of optional options to pass to the plugin
+* `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include
+* `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude
+* `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts)
 
 
 Examples
