@@ -1,7 +1,7 @@
 import type { Transform, Plugin } from 'vite';
 import { transformSync } from '@babel/core';
 import BabelPluginIstanbul from 'babel-plugin-istanbul';
-import TestExclude from 'test-exclude';
+import * as TestExclude from 'test-exclude';
 
 interface IstanbulPluginOptions {
   include?: RegExp|RegExp[];

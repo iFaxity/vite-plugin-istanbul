@@ -1,7 +1,7 @@
 "use strict";
 const core_1 = require("@babel/core");
 const babel_plugin_istanbul_1 = require("babel-plugin-istanbul");
-const test_exclude_1 = require("test-exclude");
+const TestExclude = require("test-exclude");
 function istanbulPlugin(opts = {}) {
     let exclude;
     const plugins = [babel_plugin_istanbul_1.default];
@@ -16,7 +16,7 @@ function istanbulPlugin(opts = {}) {
                 return false;
             }
             else if (!exclude) {
-                exclude = new test_exclude_1.default({
+                exclude = new TestExclude({
                     cwd: process.cwd(),
                     include: opts.include,
                     exclude: opts.exclude,
