@@ -4,14 +4,15 @@ import BabelPluginIstanbul from 'babel-plugin-istanbul';
 import * as TestExclude from 'test-exclude';
 
 interface IstanbulPluginOptions {
-  include?: RegExp|RegExp[];
-  exclude?: RegExp|RegExp[];
-  extension?: string[];
+  include?: string|string[];
+  exclude?: string|string[];
+  extension?: string|string[];
 }
 
 function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   let exclude: TestExclude;
   const plugins = [ BabelPluginIstanbul ];
+  const cwd = process.cwd();
 
   const transform: Transform = {
     test(ctx) {
@@ -23,11 +24,11 @@ function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
         return false;
       } else if (!exclude) {
         exclude = new TestExclude({
-          cwd: process.cwd(),
+          cwd,
           include: opts.include,
           exclude: opts.exclude,
           extension: opts.extension,
-          excludeNodeModules: true
+          excludeNodeModules: true,
         });
       }
 
@@ -35,7 +36,7 @@ function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     },
     transform(ctx) {
       const { code, map } = transformSync(ctx.code, {
-        plugins,
+        plugins, cwd,
         ast: false,
         sourceMaps: true,
         filename: ctx.path,
