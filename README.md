@@ -8,13 +8,15 @@ vite-plugin-istanbul
 
 A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar way as the Webpack Loader istanbul-instrumenter-loader. Only intended for use in development.
 
+Version v2.x for Vite v2.0, for Vite v1.0 install v1.x of this plugin
+
 Installation
 --------------------------
-`$ npm i -D vite-plugin-istanbul`
+`npm i -D vite-plugin-istanbul`
 
 or if you use yarn
 
-`$ yarn add -D vite-plugin-istanbul`
+`yarn add -D vite-plugin-istanbul`
 
 API
 --------------------------
@@ -55,13 +57,6 @@ module.exports = {
     }),
   ],
 };
-```
-
-Testing (TODO: not yet finished)
---------------------------
-
-```sh
-$ npm run test
 ```
 
 License
