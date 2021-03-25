@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "author": "iFaxity (christian@faxity.se)",
   "license": "MIT",
-  "module": "dist/index.js",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/*",
     "src/*"
@@ -29,8 +29,8 @@
     "istanbul",
     "nyc"
   ],
-  "peerDependencies": {
-    "vite": "^2.0.0-beta.12"
+  "dependencies": {
+    "vite": "^2.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
