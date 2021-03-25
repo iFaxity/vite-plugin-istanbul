@@ -8,7 +8,9 @@ vite-plugin-istanbul
 
 A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar way as the Webpack Loader istanbul-instrumenter-loader. Only intended for use in development.
 
-Version v2.x for Vite v2.0, for Vite v1.0 install v1.x of this plugin
+Version v2.x for Vite v2.0, for Vite v1.0 install v1.x of this plugin.
+
+As of v2.1.0 you can toggle the coverage off by setting the env variable `VITE_COVERAGE='false'`, by default it will always instrument the code. To require the explicit definition of the variable, set the option `requireEnv` to **true**.
 
 Installation
 --------------------------
@@ -36,6 +38,8 @@ Creates the vite plugin from a set of optional plugin options.
 * `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include
 * `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude
 * `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts)
+* `opts.requireEnv {string}` - Optional string to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set
+* `opts.cypress {string}` - Optional string to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For more ease of use with @cypress/code-coverage
 
 Examples
 --------------------------

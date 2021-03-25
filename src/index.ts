@@ -8,7 +8,7 @@ interface IstanbulPluginOptions {
   include?: string|string[];
   exclude?: string|string[];
   extension?: string|string[];
-  flipEnv?: boolean;
+  requireEnv?: boolean;
   cypress?: boolean;
 }
 
@@ -113,10 +113,9 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
 function istanbulPlugin(opts?: IstanbulPluginOptions): Plugin {
   // Only instrument when we want to, as we only want instrumentation in test
   const env = opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE;
-  const envValue = opts.flipEnv ? 'true' : 'false';
-  const shouldInstrument = env.toLowerCase() || envValue;
+  const defaultValue = opts.requireEnv ? '' : 'true';
 
-  if (shouldInstrument == envValue) {
+  if ((env || defaultValue).toLowerCase() == 'true') {
     return { name: 'vite:istanbul' };
   }
 
