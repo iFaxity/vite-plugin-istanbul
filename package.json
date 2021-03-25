@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-istanbul",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "iFaxity (christian@faxity.se)",
   "license": "MIT",
   "module": "./dist/index.js",
