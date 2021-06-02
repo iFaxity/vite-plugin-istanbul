@@ -43,7 +43,7 @@ function createConfigureServer(): ServerHook {
 }
 
 function transformCode(this: TransformPluginContext, srcCode: string, id: string, opts: IstanbulPluginOptions): TransformResult {
-  const plugins = [ BabelPluginIstanbul, opts ];
+  const plugins = [[ BabelPluginIstanbul, opts ]];
   const cwd = process.cwd();
 
   const { code, map } = transformSync(srcCode, {
