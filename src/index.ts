@@ -115,7 +115,7 @@ function istanbulPlugin(opts?: IstanbulPluginOptions): Plugin {
   const env = opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE;
   const requireEnv = opts.requireEnv ?? false;
 
-  if (requireEnv && (env ?? 'true').toLowerCase() !== 'true') {
+  if (requireEnv && env?.toLowerCase() === 'false') {
     return { name: 'vite:istanbul' };
   }
 
