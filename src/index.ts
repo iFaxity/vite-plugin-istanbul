@@ -113,9 +113,9 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
 function istanbulPlugin(opts?: IstanbulPluginOptions): Plugin {
   // Only instrument when we want to, as we only want instrumentation in test
   const env = opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE;
-  const defaultValue = opts.requireEnv ? '' : 'true';
+  const requireEnv = opts.requireEnv ?? false;
 
-  if ((env || defaultValue).toLowerCase() == 'true') {
+  if (requireEnv && (env ?? 'true').toLowerCase() !== 'true') {
     return { name: 'vite:istanbul' };
   }
 

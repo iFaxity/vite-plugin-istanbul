@@ -38,8 +38,8 @@ Creates the vite plugin from a set of optional plugin options.
 * `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include
 * `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude
 * `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts)
-* `opts.requireEnv {string}` - Optional string to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set
-* `opts.cypress {string}` - Optional string to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For more ease of use with @cypress/code-coverage
+* `opts.requireEnv {boolean}` - Optional boolean to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set
+* `opts.cypress {boolean}` - Optional boolean to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For more ease of use with @cypress/code-coverage
 
 Examples
 --------------------------
@@ -56,7 +56,7 @@ module.exports = {
   plugins: [
     istanbul({
       include: 'src/*',
-      exclude: [/node_modules/, 'test/'],
+      exclude: ['node_modules', 'test/'],
       extension: [ '.js', '.ts' ],
     }),
   ],
