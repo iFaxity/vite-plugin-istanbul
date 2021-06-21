@@ -39,5 +39,9 @@
     "babel-plugin-istanbul": "^6.0.0",
     "test-exclude": "^6.0.0",
     "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0"
   }
 }
