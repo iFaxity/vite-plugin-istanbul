@@ -53,6 +53,8 @@ function transformCode(this: TransformPluginContext, srcCode: string, id: string
     sourceMaps: true,
     comments: true,
     compact: true,
+    babelrc: false,
+    configFile: false,
     parserOpts: {
       allowReturnOutsideFunction: true,
       sourceType: 'module',
