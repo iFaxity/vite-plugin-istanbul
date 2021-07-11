@@ -105,6 +105,9 @@ function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     name: 'vite:istanbul',
     transform: createTransform(opts),
     configureServer: createConfigureServer(),
+    // istanbul only knows how to instrument JavaScript,
+    // this allows us to wait until the whole code is JavaScript to
+    // instrument and sourcemap
     enforce: 'post'
   };
 }
