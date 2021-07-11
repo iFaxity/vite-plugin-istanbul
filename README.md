@@ -40,6 +40,7 @@ Creates the vite plugin from a set of optional plugin options.
 * `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts)
 * `opts.requireEnv {boolean}` - Optional boolean to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set
 * `opts.cypress {boolean}` - Optional boolean to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For more ease of use with @cypress/code-coverage
+* `opts.babelConfig {babel.TransformOptions}` - Optional object change the babel setup to add plusgins to the parser (typescript, flow) [See Babel Docs for full list of options](https://babeljs.io/docs/en/options)
 
 Examples
 --------------------------
