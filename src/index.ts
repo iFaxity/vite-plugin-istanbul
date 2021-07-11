@@ -10,7 +10,6 @@ interface IstanbulPluginOptions {
   extension?: string|string[];
   requireEnv?: boolean;
   cypress?: boolean;
-  babelConfig?: TransformOptions;
 }
 
 declare global {
@@ -44,14 +43,10 @@ function createConfigureServer(): ServerHook {
 }
 
 async function instrumentCode(this: TransformPluginContext, srcCode: string, id: string, opts: IstanbulPluginOptions): Promise<TransformResult> {
-  opts.babelConfig = opts.babelConfig || {}
-  opts.babelConfig.plugins = opts.babelConfig.plugins || []
-  opts.babelConfig.parserOpts = opts.babelConfig.parserOpts || {}
 
   const cwd = process.cwd();
   const babelConfig: TransformOptions = {
-    ...opts.babelConfig,
-    plugins: [...opts.babelConfig.plugins, [ BabelPluginIstanbul, opts ]], 
+    plugins: [[ BabelPluginIstanbul, opts ]], 
     cwd,
     filename: id,
     ast: false,
@@ -61,7 +56,6 @@ async function instrumentCode(this: TransformPluginContext, srcCode: string, id:
     babelrc: false,
     configFile: false,
     parserOpts: {
-      ...opts.babelConfig.parserOpts,
       allowReturnOutsideFunction: true,
       sourceType: 'module',
     },
