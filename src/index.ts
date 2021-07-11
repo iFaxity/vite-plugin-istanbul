@@ -69,8 +69,6 @@ async function instrumentCode(this: TransformPluginContext, srcCode: string, id:
   return { code, map } as TransformResult;
 }
 
-const scriptRE = /<script([^>]*)>/g
-
 function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   const exclude = new TestExclude({
     cwd: process.cwd(),
