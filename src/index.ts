@@ -66,13 +66,13 @@ async function instrumentCode(this: TransformPluginContext, srcCode: string, id:
       sourceType: 'module',
     },
     // Only keep primitive properties
-    inputSourceMap: this.getCombinedSourcemap(),
+    inputSourceMap: JSON.parse(JSON.stringify(this.getCombinedSourcemap())),
   }
 
-  const { code, map } = await transformAsync(srcCode, babelConfig);
+  const { code, map } = (await transformAsync(srcCode, babelConfig))!
 
   // Required to cast to correct mapping value
-  return { code, map: map as SourceMap };
+  return { code, map } as TransformResult;
 }
 
 const scriptRE = /<script([^>]*)>/g
@@ -86,7 +86,7 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
     excludeNodeModules: true,
   });
 
-  return async function (this: TransformPluginContext, srcCode: string, id: string): Promise<{code:string, map: string}> {
+  return async function (this: TransformPluginContext, srcCode: string, id: string): Promise<undefined | TransformResult>{
     if (process.env.NODE_ENV == 'production' || id.startsWith('/@modules/')) {
       // do not transform if this is a dep
       // do not transform for production builds
@@ -94,8 +94,8 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
     }
 
     if (exclude.shouldInstrument(id)) {
-      // is the vue component has already been transformed, 
-      // it can only be sliced
+      // if the vue component has already been transformed, 
+      // it can be treated as a javascript file
       if (!id.endsWith('.vue') || srcCode.trim().slice(0, 1) !== "<") {
         return instrumentCode.call(this, srcCode, id, opts);
       }
@@ -103,7 +103,7 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
       // Vue files are special, it requires a hack to fix the source mappings
       // We take the source code from within the <script> tag and instrument this
       // Then we pad the lines to get the correct line numbers for the mappings
-      const openScriptTagObject = scriptRE.exec(srcCode) || { index: -1};
+      const openScriptTagObject = scriptRE.exec(srcCode);
       const endIndex = srcCode.indexOf('</script>');
       
       if (!openScriptTagObject || endIndex == -1) {
@@ -124,8 +124,6 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
       // if </script> is anywhere in the script block, even in a string, 
       // the parser errors
       const resCodeSanatized = res.code.replace(/<\/script>/g, "<\\/script>")
-
-      console.log(resCodeSanatized)
       
       res.code = `${srcCode.slice(0, startIndex + startOffset)}\n${resCodeSanatized}\n${srcCode.slice(endIndex)}`;
       return res;
@@ -133,7 +131,7 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   };
 }
 
-function istanbulPlugin(opts?: IstanbulPluginOptions): Plugin {
+function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   // Only instrument when we want to, as we only want instrumentation in test
   const env = opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE;
   const requireEnv = opts.requireEnv ?? false;
@@ -146,6 +144,7 @@ function istanbulPlugin(opts?: IstanbulPluginOptions): Plugin {
     name: 'vite:istanbul',
     transform: createTransform(opts),
     configureServer: createConfigureServer(),
+    enforce: 'post'
   };
 }
 
