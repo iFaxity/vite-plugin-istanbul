@@ -1,8 +1,8 @@
 import type { Plugin, ServerHook, TransformResult } from 'vite';
-import type { SourceMap, TransformHook, TransformPluginContext } from 'rollup';
+import type { TransformHook, TransformPluginContext } from 'rollup';
 import { transformAsync, TransformOptions } from '@babel/core';
 import BabelPluginIstanbul from 'babel-plugin-istanbul';
-import * as TestExclude from 'test-exclude';
+import TestExclude from 'test-exclude';
 
 interface IstanbulPluginOptions {
   include?: string|string[];
