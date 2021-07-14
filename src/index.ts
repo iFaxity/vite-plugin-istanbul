@@ -1,7 +1,6 @@
 import type { Plugin, ServerHook, TransformResult } from 'vite';
-import type { TransformHook, TransformPluginContext } from 'rollup';
-import { transformAsync, TransformOptions } from '@babel/core';
-import BabelPluginIstanbul from 'babel-plugin-istanbul';
+import type { TransformHook, TransformPluginContext, SourceMap } from 'rollup';
+import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
 
 interface IstanbulPluginOptions {
@@ -12,15 +11,24 @@ interface IstanbulPluginOptions {
   cypress?: boolean;
 }
 
+// Required for typing to work in createConfigureServer()
 declare global {
   var __coverage__: any;
 }
 
+// Custom extensions to include .vue files
+const DEFAULT_EXTENSION = ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue'];
 const COVERAGE_PUBLIC_PATH = '/__coverage__';
+const PLUGIN_NAME = 'vite:istanbul';
+
+function sanitizeSourceMap(sourceMap: SourceMap): SourceMap {
+  // JSON parse/stringify trick required for istanbul to accept the SourceMap
+  return JSON.parse(JSON.stringify(sourceMap));
+}
 
 function createConfigureServer(): ServerHook {
   return ({ middlewares }) => {
-    // Return global code coverage (will probably be null).
+    // Returns the current code coverage in the global scope
     middlewares.use((req, res, next) => {
       if (req.url !== COVERAGE_PUBLIC_PATH) {
         return next();
@@ -42,71 +50,56 @@ function createConfigureServer(): ServerHook {
   };
 }
 
-async function instrumentCode(this: TransformPluginContext, srcCode: string, id: string, opts: IstanbulPluginOptions): Promise<TransformResult> {
-
-  const cwd = process.cwd();
-  const babelConfig: TransformOptions = {
-    plugins: [[ BabelPluginIstanbul, opts ]], 
-    cwd,
-    filename: id,
-    ast: false,
-    sourceMaps: true,
-    comments: true,
-    compact: false,
-    babelrc: false,
-    configFile: false,
-    parserOpts: {
-      allowReturnOutsideFunction: true,
-      sourceType: 'module',
-    },
-    // Only keep primitive properties
-    inputSourceMap: JSON.parse(JSON.stringify(this.getCombinedSourcemap())),
-  }
-
-  const { code, map } = (await transformAsync(srcCode, babelConfig))!
-
-  // Required to cast to correct mapping value
-  return { code, map } as TransformResult;
-}
-
 function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   const exclude = new TestExclude({
     cwd: process.cwd(),
     include: opts.include,
     exclude: opts.exclude,
-    extension: opts.extension,
+    extension: opts.extension ?? DEFAULT_EXTENSION,
     excludeNodeModules: true,
   });
+  const instrumenter = createInstrumenter({
+    preserveComments: true,
+    produceSourceMap: true,
+    autoWrap: true,
+    esModules: true,
+  });
 
-  return async function (this: TransformPluginContext, srcCode: string, id: string): Promise<undefined | TransformResult>{
+  return function (this: TransformPluginContext, srcCode: string, id: string): TransformResult | undefined {
     if (id.startsWith('/@modules/')) {
       // do not transform if this is a dep
       return;
     }
 
     if (exclude.shouldInstrument(id)) {
-      return instrumentCode.call(this, srcCode, id, opts);
+      const sourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
+      const code = instrumenter.instrumentSync(srcCode, id, sourceMap);
+      const map = instrumenter.lastSourceMap();
+
+      // Required to cast to correct mapping value
+      return { code, map } as TransformResult;
     }
   };
 }
 
 function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   // Only instrument when we want to, as we only want instrumentation in test
+  // By default the plugin is always on
   const env = opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE;
   const requireEnv = opts.requireEnv ?? false;
 
   if (process.env.NODE_ENV == 'production' && requireEnv && env?.toLowerCase() === 'false') {
-    return { name: 'vite:istanbul' };
+    return { name: PLUGIN_NAME };
   }
 
   return {
-    name: 'vite:istanbul',
+    name: PLUGIN_NAME,
     transform: createTransform(opts),
     configureServer: createConfigureServer(),
     // istanbul only knows how to instrument JavaScript,
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
-    enforce: 'post'
+    enforce: 'post',
   };
 }
 
