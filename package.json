@@ -29,16 +29,14 @@
     "nyc"
   ],
   "dependencies": {
-    "vite": "^2.1.2"
+    "istanbul-lib-instrument": "^4.0.3",
+    "test-exclude": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@types/babel__core": "^7.1.12",
-    "@types/node": "^14.0.27",
-    "babel-plugin-istanbul": "^6.0.0",
-    "test-exclude": "^6.0.0",
-    "typescript": "^3.9.7",
     "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/git": "^9.0.0"
+    "@semantic-release/git": "^9.0.0",
+    "@types/node": "^16.3.1",
+    "typescript": "^4.3.5",
+    "vite": "^2.4.2"
   }
 }

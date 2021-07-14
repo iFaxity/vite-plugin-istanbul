@@ -9,7 +9,9 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "allowSyntheticDefaultImports": true
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": [ "src/*" ],
   "exclude": [ "**/node_modules" ]
