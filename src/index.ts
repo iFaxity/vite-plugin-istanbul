@@ -9,6 +9,7 @@ interface IstanbulPluginOptions {
   extension?: string|string[];
   requireEnv?: boolean;
   cypress?: boolean;
+  checkProd?: boolean;
 }
 
 // Required for typing to work in createConfigureServer()
@@ -85,13 +86,15 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
 function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   // Only instrument when we want to, as we only want instrumentation in test
   // By default the plugin is always on
-  const env = opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE;
-  const requireEnv = opts.requireEnv ?? false;
+  const env = (opts.cypress ? process.env.CYPRESS_COVERAGE : process.env.VITE_COVERAGE);
+  const envValue = env?.toLowerCase();
+  const requireEnv = opts?.requireEnv ?? false;
+  const prodCheck = opts?.checkProd ?? true;
 
   if (
-    process.env.NODE_ENV == 'production' || 
-    env?.toLowerCase() === 'false' || 
-    (requireEnv && env?.toLowerCase() !== 'true')
+    (prodCheck && process.env.NODE_ENV?.toLowerCase() === 'production') ||
+    (!requireEnv && envValue === 'false') ||
+    (requireEnv && envValue !== 'true')
   ) {
     return { name: PLUGIN_NAME };
   }

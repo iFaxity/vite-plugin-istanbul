@@ -40,6 +40,7 @@ Creates the vite plugin from a set of optional plugin options.
 * `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts). By default this is set to `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue']`
 * `opts.requireEnv {boolean}` - Optional boolean to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set
 * `opts.cypress {boolean}` - Optional boolean to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For ease of use with @cypress/code-coverage
+* `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments, checks NODE_ENV for "production" (case insensitive). Defaults to true`
 
 Examples
 --------------------------
