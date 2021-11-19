@@ -68,7 +68,7 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   });
 
   return function (this: TransformPluginContext, srcCode: string, id: string): TransformResult | undefined {
-    if (id.startsWith('/@modules/')) {
+    if (id.startsWith('/@modules/') || id.startsWith('\0')) {
       // do not transform if this is a dep
       return;
     }
