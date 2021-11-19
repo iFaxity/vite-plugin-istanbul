@@ -10,6 +10,7 @@ interface IstanbulPluginOptions {
   requireEnv?: boolean;
   cypress?: boolean;
   checkProd?: boolean;
+  cwd?: string;
 }
 
 // Required for typing to work in createConfigureServer()
@@ -53,7 +54,7 @@ function createConfigureServer(): ServerHook {
 
 function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   const exclude = new TestExclude({
-    cwd: process.cwd(),
+    cwd: opts.cwd || process.cwd(),
     include: opts.include,
     exclude: opts.exclude,
     extension: opts.extension ?? DEFAULT_EXTENSION,
