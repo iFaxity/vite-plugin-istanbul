@@ -10,6 +10,7 @@ interface IstanbulPluginOptions {
   requireEnv?: boolean;
   cypress?: boolean;
   checkProd?: boolean;
+  cwd?: string;
 }
 
 // Required for typing to work in createConfigureServer()
@@ -53,7 +54,7 @@ function createConfigureServer(): ServerHook {
 
 function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   const exclude = new TestExclude({
-    cwd: process.cwd(),
+    cwd: opts.cwd || process.cwd(),
     include: opts.include,
     exclude: opts.exclude,
     extension: opts.extension ?? DEFAULT_EXTENSION,
@@ -67,7 +68,7 @@ function createTransform(opts: IstanbulPluginOptions = {}): TransformHook {
   });
 
   return function (this: TransformPluginContext, srcCode: string, id: string): TransformResult | undefined {
-    if (id.startsWith('/@modules/')) {
+    if (id.startsWith('/@modules/') || id.startsWith('\0')) {
       // do not transform if this is a dep
       return;
     }
@@ -103,6 +104,10 @@ function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     name: PLUGIN_NAME,
     transform: createTransform(opts),
     configureServer: createConfigureServer(),
+    config(config) {
+      config.build = config.build || {}
+      config.build.sourcemap = true // enforce sourcemapping
+    }
     // istanbul only knows how to instrument JavaScript,
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
