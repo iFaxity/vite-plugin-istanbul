@@ -107,7 +107,7 @@ function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     config(config) {
       config.build = config.build || {}
       config.build.sourcemap = true // enforce sourcemapping
-    }
+    },
     // istanbul only knows how to instrument JavaScript,
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
