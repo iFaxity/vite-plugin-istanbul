@@ -17,6 +17,7 @@ interface IstanbulPluginOptions {
   cypress?: boolean;
   checkProd?: boolean;
   cwd?: string;
+  forceBuildInstrument?: boolean;
 }
 
 // Custom extensions to include .vue files
@@ -36,6 +37,7 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   // By default the plugin is always on
   const requireEnv = opts?.requireEnv ?? false;
   const checkProd = opts?.checkProd ?? true;
+  const forceBuildInstrument = opts?.forceBuildInstrument ?? false
   const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
   const exclude = new TestExclude({
     cwd: opts.cwd ?? process.cwd(),
@@ -57,7 +59,7 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
 
   return {
     name: PLUGIN_NAME,
-    apply: 'serve', // only apply for live service
+    apply: forceBuildInstrument ? 'build' : 'serve',
     // istanbul only knows how to instrument JavaScript,
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
@@ -78,7 +80,7 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
       const { CYPRESS_COVERAGE, VITE_COVERAGE } = config.env;
       const env = (opts.cypress ? CYPRESS_COVERAGE : VITE_COVERAGE)?.toLowerCase();
 
-      if ((checkProd && isProduction) ||
+      if ((checkProd && isProduction && !forceBuildInstrument) ||
         (!requireEnv && env === 'false') ||
         (requireEnv && env !== 'true')) {
         enabled = false;
