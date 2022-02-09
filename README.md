@@ -42,6 +42,7 @@ Creates the vite plugin from a set of optional plugin options.
 * `opts.requireEnv {boolean}` - Optional boolean to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set.
 * `opts.cypress {boolean}` - Optional boolean to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For ease of use with @cypress/code-coverage.
 * `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments, checks *NODE_ENV* for "production" (case insensitive). Defaults to true.
+* `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
 
 Examples
 --------------------------
