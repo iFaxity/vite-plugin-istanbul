@@ -77,7 +77,8 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
       // We need to check if the plugin should enable after all configuration is resolved
       // As config can be modified by other plugins and from .env variables
       const { isProduction } = config;
-      const { CYPRESS_COVERAGE, VITE_COVERAGE } = config.env;
+      const { CYPRESS_COVERAGE } = process.env;
+      const { VITE_COVERAGE } = config.env;
       const env = (opts.cypress ? CYPRESS_COVERAGE : VITE_COVERAGE)?.toLowerCase();
 
       if ((checkProd && isProduction && !forceBuildInstrument) ||
