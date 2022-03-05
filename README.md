@@ -6,11 +6,10 @@ vite-plugin-istanbul
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/vite-plugin-istanbul?label=Bundle%20size&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/vite-plugin-istanbul?label=Bundle%20size%20%28gzip%29&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 
-A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar way as the Webpack Loader istanbul-instrumenter-loader. Only intended for use in development while running tests.
+A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar way as the Webpack Loader `istanbul-instrumenter-loader`. Only intended for use in development while running tests.
 
 Version v2.x for Vite v2.0, for Vite v1.0 install v1.x of this plugin.
-
-As of v2.1.0 you can toggle the coverage off by setting the env variable `VITE_COVERAGE='false'`, by default it will always instrument the code. To require the explicit definition of the variable, set the option `requireEnv` to **true**.
+However only the v2 version is actively tested and developed.
 
 Installation
 --------------------------
@@ -43,6 +42,15 @@ Creates the vite plugin from a set of optional plugin options.
 * `opts.cypress {boolean}` - Optional boolean to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For ease of use with @cypress/code-coverage.
 * `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments, checks *NODE_ENV* for "production" (case insensitive). Defaults to true.
 * `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
+
+Notes
+--------------------------
+
+As of v2.1.0 you can toggle the coverage off by setting the env variable `VITE_COVERAGE='false'`, by default it will always instrument the code. To require the explicit definition of the variable, set the option `requireEnv` to **true**.
+
+This plugin also requires the Vite configuration [build.sourcemap](https://vitejs.dev/config/#build-sourcemap) to be set to either **true**, **'inline'**, **'hidden'**.
+But the plugin will automatically default to **true** if it is missing in order to give accurate cove coverage.
+The plugin will notify when this happens in order for a developer to fix it. This notification will show even when the plugin is disabled by e.g `opts.requireEnv`, `VITE_COVERAGE=false`. This is due to a limitation of the API for this kind of feature.
 
 Examples
 --------------------------
