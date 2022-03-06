@@ -1,7 +1,7 @@
 vite-plugin-istanbul
 ==========================
 
-[![Codacy grade](https://img.shields.io/codacy/grade/a0c628b128c044269faefc1da74382f7?style=for-the-badge&logo=codacy)](https://app.codacy.com/manual/iFaxity/vite-plugin-istanbul/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a0c628b128c044269faefc1da74382f7)](https://www.codacy.com/gh/iFaxity/vite-plugin-istanbul/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=iFaxity/vite-plugin-istanbul&amp;utm_campaign=Badge_Grade)
 [![npm (scoped)](https://img.shields.io/npm/v/vite-plugin-istanbul?style=for-the-badge&logo=npm)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/vite-plugin-istanbul?label=Bundle%20size&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/vite-plugin-istanbul?label=Bundle%20size%20%28gzip%29&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
@@ -33,15 +33,15 @@ Creates the vite plugin from a set of optional plugin options.
 **Returns:** Vite Plugin
 
 #### Parameters
-* `opts {IstanbulPluginOptions}` - Object of optional options to pass to the plugin.
-* `opts.cwd {string}` - Optional string of the current working directory, used for the include/exclude patterns. Defaults to process.cwd().
-* `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include.
-* `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude.
-* `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts). By default this is set to `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue']`.
-* `opts.requireEnv {boolean}` - Optional boolean to require env to be true to instrument to code, otherwise it will instrument even if env variable is not set.
-* `opts.cypress {boolean}` - Optional boolean to change the env to CYPRESS_COVERAGE instead of VITE_COVERAGE. For ease of use with @cypress/code-coverage.
-* `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments, checks *NODE_ENV* for "production" (case insensitive). Defaults to true.
-* `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
+  * `opts {IstanbulPluginOptions}` - Object of optional options to pass to the plugin.
+  * `opts.cwd {string}` - Optional string of the current working directory, used for the include/exclude patterns. Defaults to `process.cwd()`.
+  * `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include.
+  * `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude.
+  * `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts). By default this is set to `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue']`.
+  * `opts.requireEnv {boolean}` - Optional boolean to require the environment variable (defaults to **VITE_COVERAGE**) to equal `true` in order to instrument the code. Otherwise it will instrument even if env variable is not set. However if `requireEnv` is not set the instrumentation will stop if the environment variable is equal to `false`.
+  * `opts.cypress {boolean}` - Optional boolean to change the environment variable to **CYPRESS_COVERAGE** instead of **VITE_COVERAGE**. For ease of use with `@cypress/code-coverage``.
+  * `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.
+  * `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
 
 Notes
 --------------------------
