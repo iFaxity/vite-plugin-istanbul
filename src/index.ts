@@ -65,8 +65,10 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     // instrument and sourcemap
     enforce: 'post',
     config(config) {
-      if (config.build?.sourcemap != true) {
-        logger.warn(`${PLUGIN_NAME}> ${yellow('Sourcemaps not enabled and will be automatically enabled for code coverage to be accurate.')}`);
+      // If sourcemap is not set (either undefined or false)
+      if (!config.build?.sourcemap) {
+        logger.warn(`${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
+ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`);
 
         // Enforce sourcemapping,
         config.build = config.build || {};
@@ -92,6 +94,7 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
       }
 
       // Returns the current code coverage in the global scope
+      // Used if an external endpoint is required to fetch code coverage
       middlewares.use((req, res, next) => {
         if (req.url !== COVERAGE_PUBLIC_PATH) {
           return next();
