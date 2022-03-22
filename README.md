@@ -1,7 +1,6 @@
 vite-plugin-istanbul
 ==========================
-
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a0c628b128c044269faefc1da74382f7)](https://www.codacy.com/gh/iFaxity/vite-plugin-istanbul/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=iFaxity/vite-plugin-istanbul&amp;utm_campaign=Badge_Grade)
+[![Codacy grade](https://img.shields.io/codacy/grade/a0c628b128c044269faefc1da74382f7?style=for-the-badge&logo=codacy)](https://www.codacy.com/gh/iFaxity/vite-plugin-istanbul/dashboard)
 [![npm (scoped)](https://img.shields.io/npm/v/vite-plugin-istanbul?style=for-the-badge&logo=npm)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/vite-plugin-istanbul?label=Bundle%20size&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/vite-plugin-istanbul?label=Bundle%20size%20%28gzip%29&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
