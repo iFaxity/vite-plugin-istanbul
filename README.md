@@ -41,6 +41,7 @@ Creates the vite plugin from a set of optional plugin options.
   * `opts.cypress {boolean}` - Optional boolean to change the environment variable to **CYPRESS_COVERAGE** instead of **VITE_COVERAGE**. For ease of use with `@cypress/code-coverage``.
   * `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.
   * `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
+  * `opts.nycrcPath {string}` - Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.
 
 Notes
 --------------------------
