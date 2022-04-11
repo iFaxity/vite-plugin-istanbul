@@ -122,8 +122,9 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
       }
 
       if (exclude.shouldInstrument(id)) {
+        const filename = this.getFileName(id);
         const sourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
-        const code = instrumenter.instrumentSync(srcCode, id, sourceMap);
+        const code = instrumenter.instrumentSync(srcCode, filename, sourceMap);
         const map = instrumenter.lastSourceMap();
 
         // Required to cast to correct mapping value
