@@ -17,9 +17,9 @@ jobs:
           node-version: 14
     
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
       - name: Build
-        run: yarn build
+        run: npm run build
 
       - name: Release
         run: npx semantic-release
