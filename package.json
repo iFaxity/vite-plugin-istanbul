@@ -29,8 +29,8 @@
     "nyc"
   ],
   "dependencies": {
-    "chalk": "^5.0.1",
     "istanbul-lib-instrument": "^5.1.0",
+    "picocolors": "^1.0.0",
     "test-exclude": "^6.0.0"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ import type { SourceMap } from 'rollup';
 import { Plugin, TransformResult, createLogger } from 'vite';
 import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
-import chalk from 'chalk';
+import { yellow } from 'picocolors';
 
 // Required for typing to work in configureServer()
 declare global {
@@ -67,7 +67,7 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     config(config) {
       // If sourcemap is not set (either undefined or false)
       if (!config.build?.sourcemap) {
-        logger.warn(`${PLUGIN_NAME}> ${chalk.yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
+        logger.warn(`${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
  To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`);
 
         // Enforce sourcemapping,
