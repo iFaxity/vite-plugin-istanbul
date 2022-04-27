@@ -47,6 +47,8 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     excludeNodeModules: true,
   });
   const instrumenter = createInstrumenter({
+    coverageGlobalScopeFunc: false,
+    coverageGlobalScope: 'window',
     preserveComments: true,
     produceSourceMap: true,
     autoWrap: true,
