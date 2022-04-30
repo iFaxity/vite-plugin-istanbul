@@ -6,6 +6,8 @@ declare module 'istanbul-lib-instrument' {
   }
 
   export function createInstrumenter(opts: {
+    coverageGlobalScopeFunc?: boolean,
+    coverageGlobalScope?: string;
     preserveComments?: boolean,
     produceSourceMap?: boolean,
     autoWrap?: boolean,
