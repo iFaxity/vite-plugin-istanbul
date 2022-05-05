@@ -1,4 +1,4 @@
-import type { SourceMap } from 'rollup';
+import type { ExistingRawSourceMap } from 'rollup';
 import { Plugin, TransformResult, createLogger } from 'vite';
 import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
@@ -27,7 +27,9 @@ const PLUGIN_NAME = 'vite:istanbul';
 const MODULE_PREFIX = '/@modules/';
 const NULL_STRING = '\0';
 
-function sanitizeSourceMap(sourceMap: SourceMap): SourceMap {
+function sanitizeSourceMap(sourceMap: ExistingRawSourceMap): ExistingRawSourceMap {
+  // delete sourcesContent since it is optional and if it contains process.env.NODE_ENV vite will try and replace it and break
+  delete sourceMap.sourcesContent;
   // JSON parse/stringify trick required for istanbul to accept the SourceMap
   return JSON.parse(JSON.stringify(sourceMap));
 }

@@ -1,8 +1,8 @@
 declare module 'istanbul-lib-instrument' {
-  import { SourceMap } from 'rollup';
+  import { ExistingRawSourceMap } from 'rollup';
   interface Instrumenter {
-    instrumentSync(code: string, filename: string, inputSourceMap?: SourceMap | undefined): string;
-    lastSourceMap(): SourceMap;
+    instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap | undefined): string;
+    lastSourceMap(): ExistingRawSourceMap;
   }
 
   export function createInstrumenter(opts: {
