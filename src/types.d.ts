@@ -1,7 +1,8 @@
 declare module 'istanbul-lib-instrument' {
   import { ExistingRawSourceMap } from 'rollup';
+
   interface Instrumenter {
-    instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap | undefined): string;
+    instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap): string;
     lastSourceMap(): ExistingRawSourceMap;
   }
 
@@ -27,5 +28,6 @@ declare module 'test-exclude' {
 
     shouldInstrument(filePath:string):boolean
   }
+
   export = TestExclude
 }
