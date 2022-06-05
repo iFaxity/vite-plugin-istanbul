@@ -106,10 +106,6 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
         : getEnvVariable('COVERAGE', envPrefix, env);
       const envVar = envCoverage?.toLowerCase() ?? '';
 
-      console.dir(env);
-      console.log(`PREFIX: ${envPrefix}`);
-      console.log(`VAR: ${envVar}`);
-
       if ((checkProd && isProduction && !forceBuildInstrument) ||
         (!requireEnv && envVar === 'false') ||
         (requireEnv && envVar !== 'true')) {
