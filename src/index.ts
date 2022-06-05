@@ -35,6 +35,20 @@ function sanitizeSourceMap(rawSourceMap: ExistingRawSourceMap): ExistingRawSourc
   return JSON.parse(JSON.stringify(sourceMap));
 }
 
+function getEnvVariable(key: string, prefix: string|string[], env: Record<string, any>): string {
+  if (Array.isArray(prefix)) {
+    const envPrefix = prefix.find(pre => {
+      const prefixedName = `${pre}${key}`;
+
+      return env[prefixedName] != null;
+    });
+
+    prefix = envPrefix ?? '';
+  }
+
+  return env[`${prefix}${key}`];
+}
+
 export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   // Only instrument when we want to, as we only want instrumentation in test
   // By default the plugin is always on
@@ -83,14 +97,22 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     configResolved(config) {
       // We need to check if the plugin should enable after all configuration is resolved
       // As config can be modified by other plugins and from .env variables
-      const { isProduction } = config;
+      const { isProduction, env } = config;
       const { CYPRESS_COVERAGE } = process.env;
-      const { VITE_COVERAGE } = config.env;
-      const env = (opts.cypress ? CYPRESS_COVERAGE : VITE_COVERAGE)?.toLowerCase();
+      const envPrefix = config.envPrefix ?? 'VITE_';
+
+      const envCoverage = opts.cypress
+        ? CYPRESS_COVERAGE
+        : getEnvVariable('COVERAGE', envPrefix, env);
+      const envVar = envCoverage?.toLowerCase() ?? '';
+
+      console.dir(env);
+      console.log(`PREFIX: ${envPrefix}`);
+      console.log(`VAR: ${envVar}`);
 
       if ((checkProd && isProduction && !forceBuildInstrument) ||
-        (!requireEnv && env === 'false') ||
-        (requireEnv && env !== 'true')) {
+        (!requireEnv && envVar === 'false') ||
+        (requireEnv && envVar !== 'true')) {
         enabled = false;
       }
     },
