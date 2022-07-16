@@ -16,6 +16,19 @@ declare module 'istanbul-lib-instrument' {
   }): Instrumenter;
 }
 
+declare module '@istanbuljs/load-nyc-config' {
+  export interface NYCConfig {
+    extension?: string[];
+    include?: string[];
+    exclude?: string[];
+  }
+
+  export function loadNycConfig(opts: {
+    cwd?: string,
+    nycrcPath?: string,
+  }): NYCConfig;
+}
+
 declare module 'test-exclude' {
   class TestExclude {
     constructor(opts: {

@@ -2,6 +2,7 @@ import type { ExistingRawSourceMap } from 'rollup';
 import { Plugin, TransformResult, createLogger } from 'vite';
 import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
+import { loadNycConfig } from '@istanbuljs/load-nyc-config';
 import { yellow } from 'picocolors';
 
 // Required for typing to work in configureServer()
@@ -16,8 +17,9 @@ interface IstanbulPluginOptions {
   requireEnv?: boolean;
   cypress?: boolean;
   checkProd?: boolean;
-  cwd?: string;
   forceBuildInstrument?: boolean;
+  cwd?: string;
+  nycrcPath?: string;
 }
 
 // Custom extensions to include .vue files
@@ -49,20 +51,33 @@ function getEnvVariable(key: string, prefix: string|string[], env: Record<string
   return env[`${prefix}${key}`];
 }
 
-export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
+function createTestExclude(opts: IstanbulPluginOptions): TestExclude {
+  const { nycrcPath, include, exclude, extension } = opts;
+  const cwd = opts.cwd ?? process.cwd();
+
+  const nycConfig = loadNycConfig({
+    cwd,
+    nycrcPath,
+  });
+
   // Only instrument when we want to, as we only want instrumentation in test
   // By default the plugin is always on
-  const requireEnv = opts?.requireEnv ?? false;
-  const checkProd = opts?.checkProd ?? true;
-  const forceBuildInstrument = opts?.forceBuildInstrument ?? false
-  const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
-  const exclude = new TestExclude({
-    cwd: opts.cwd ?? process.cwd(),
-    include: opts.include,
-    exclude: opts.exclude,
-    extension: opts.extension ?? DEFAULT_EXTENSION,
+  return new TestExclude({
+    cwd,
+    include: include ?? nycConfig.include,
+    exclude: exclude ?? nycConfig.exclude,
+    extension: extension ?? nycConfig.extension ?? DEFAULT_EXTENSION,
     excludeNodeModules: true,
   });
+}
+
+export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
+  const requireEnv = opts?.requireEnv ?? false;
+  const checkProd = opts?.checkProd ?? true;
+  const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
+
+  const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
+  const testExclude = createTestExclude(opts);
   const instrumenter = createInstrumenter({
     coverageGlobalScopeFunc: false,
     coverageGlobalScope: 'window',
@@ -145,7 +160,7 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
         return;
       }
 
-      if (exclude.shouldInstrument(id)) {
+      if (testExclude.shouldInstrument(id)) {
         const sourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
         const code = instrumenter.instrumentSync(srcCode, id, sourceMap);
         const map = instrumenter.lastSourceMap();

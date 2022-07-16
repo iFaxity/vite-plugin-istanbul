@@ -32,15 +32,16 @@ Creates the vite plugin from a set of optional plugin options.
 **Returns:** Vite Plugin
 
 #### Parameters
-  * `opts {IstanbulPluginOptions}` - Object of optional options to pass to the plugin.
-  * `opts.cwd {string}` - Optional string of the current working directory, used for the include/exclude patterns. Defaults to `process.cwd()`.
-  * `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include.
-  * `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude.
-  * `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts). By default this is set to `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue']`.
-  * `opts.requireEnv {boolean}` - Optional boolean to require the environment variable (defaults to **VITE_COVERAGE**) to equal `true` in order to instrument the code. Otherwise it will instrument even if env variable is not set. However if `requireEnv` is not set the instrumentation will stop if the environment variable is equal to `false`.
-  * `opts.cypress {boolean}` - Optional boolean to change the environment variable to **CYPRESS_COVERAGE** instead of **VITE_COVERAGE**. For ease of use with `@cypress/code-coverage``.
-  * `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.
-  * `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
+*  `opts {IstanbulPluginOptions}` - Object of optional options to pass to the plugin.
+*  `opts.cwd {string}` - Optional string of the current working directory, used for the include/exclude patterns. Defaults to `process.cwd()`.
+*  `opts.include {string|string[]}` - Optional string or array of strings of glob patterns to include.
+*  `opts.exclude {string|string[]}` - Optional string or array of strings of glob patterns to exclude.
+*  `opts.extension {string|string[]}` - Optional string or array of strings of extensions to include (dot prefixed like .js or .ts). By default this is set to `['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue']`.
+*  `opts.requireEnv {boolean}` - Optional boolean to require the environment variable (defaults to **VITE_COVERAGE**) to equal `true` in order to instrument the code. Otherwise it will instrument even if env variable is not set. However if `requireEnv` is not set the instrumentation will stop if the environment variable is equal to `false`.
+*  `opts.cypress {boolean}` - Optional boolean to change the environment variable to **CYPRESS_COVERAGE** instead of **VITE_COVERAGE**. For ease of use with `@cypress/code-coverage``.
+*  `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.
+*  `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
+*  `opts.nycrcPath {string}` - Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.
 
 Notes
 --------------------------
