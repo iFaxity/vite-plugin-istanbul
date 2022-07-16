@@ -1,9 +1,9 @@
-import type { SourceMap } from 'rollup';
+import type { ExistingRawSourceMap } from 'rollup';
 import { Plugin, TransformResult, createLogger } from 'vite';
 import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
-import { yellow } from 'chalk';
 import { loadNycConfig } from '@istanbuljs/load-nyc-config';
+import { yellow } from 'picocolors';
 
 // Required for typing to work in configureServer()
 declare global {
@@ -29,32 +29,58 @@ const PLUGIN_NAME = 'vite:istanbul';
 const MODULE_PREFIX = '/@modules/';
 const NULL_STRING = '\0';
 
-function sanitizeSourceMap(sourceMap: SourceMap): SourceMap {
+function sanitizeSourceMap(rawSourceMap: ExistingRawSourceMap): ExistingRawSourceMap {
+  // Delete sourcesContent since it is optional and if it contains process.env.NODE_ENV vite will break when trying to replace it
+  const { sourcesContent, ...sourceMap } = rawSourceMap;
+
   // JSON parse/stringify trick required for istanbul to accept the SourceMap
   return JSON.parse(JSON.stringify(sourceMap));
 }
 
-export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
+function getEnvVariable(key: string, prefix: string|string[], env: Record<string, any>): string {
+  if (Array.isArray(prefix)) {
+    const envPrefix = prefix.find(pre => {
+      const prefixedName = `${pre}${key}`;
+
+      return env[prefixedName] != null;
+    });
+
+    prefix = envPrefix ?? '';
+  }
+
+  return env[`${prefix}${key}`];
+}
+
+function createTestExclude(opts: IstanbulPluginOptions): TestExclude {
+  const { nycrcPath, include, exclude, extension } = opts;
   const cwd = opts.cwd ?? process.cwd();
+
   const nycConfig = loadNycConfig({
     cwd,
-    nycrcPath: opts.nycrcPath,
+    nycrcPath,
   });
 
   // Only instrument when we want to, as we only want instrumentation in test
   // By default the plugin is always on
-  const requireEnv = opts?.requireEnv ?? false;
-  const checkProd = opts?.checkProd ?? true;
-  const forceBuildInstrument = opts?.forceBuildInstrument ?? false
-  const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
-  const testExclude = new TestExclude({
-    cwd: cwd ?? process.cwd(),
-    include: opts.include ?? nycConfig.include,
-    exclude: opts.exclude ?? nycConfig.exclude,
-    extension: opts.extension ?? nycConfig.extension ?? DEFAULT_EXTENSION,
+  return new TestExclude({
+    cwd,
+    include: include ?? nycConfig.include,
+    exclude: exclude ?? nycConfig.exclude,
+    extension: extension ?? nycConfig.extension ?? DEFAULT_EXTENSION,
     excludeNodeModules: true,
   });
+}
+
+export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
+  const requireEnv = opts?.requireEnv ?? false;
+  const checkProd = opts?.checkProd ?? true;
+  const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
+
+  const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
+  const testExclude = createTestExclude(opts);
   const instrumenter = createInstrumenter({
+    coverageGlobalScopeFunc: false,
+    coverageGlobalScope: 'window',
     preserveComments: true,
     produceSourceMap: true,
     autoWrap: true,
@@ -86,13 +112,18 @@ export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
     configResolved(config) {
       // We need to check if the plugin should enable after all configuration is resolved
       // As config can be modified by other plugins and from .env variables
-      const { isProduction } = config;
-      const { CYPRESS_COVERAGE, VITE_COVERAGE } = config.env;
-      const env = (opts.cypress ? CYPRESS_COVERAGE : VITE_COVERAGE)?.toLowerCase();
+      const { isProduction, env } = config;
+      const { CYPRESS_COVERAGE } = process.env;
+      const envPrefix = config.envPrefix ?? 'VITE_';
+
+      const envCoverage = opts.cypress
+        ? CYPRESS_COVERAGE
+        : getEnvVariable('COVERAGE', envPrefix, env);
+      const envVar = envCoverage?.toLowerCase() ?? '';
 
       if ((checkProd && isProduction && !forceBuildInstrument) ||
-        (!requireEnv && env === 'false') ||
-        (requireEnv && env !== 'true')) {
+        (!requireEnv && envVar === 'false') ||
+        (requireEnv && envVar !== 'true')) {
         enabled = false;
       }
     },
