@@ -10,7 +10,7 @@ declare global {
   var __coverage__: any;
 }
 
-interface IstanbulPluginOptions {
+export interface IstanbulPluginOptions {
   include?: string|string[];
   exclude?: string|string[];
   extension?: string|string[];
