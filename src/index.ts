@@ -71,7 +71,7 @@ function createTestExclude(opts: IstanbulPluginOptions): TestExclude {
   });
 }
 
-export = function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
+export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   const requireEnv = opts?.requireEnv ?? false;
   const checkProd = opts?.checkProd ?? true;
   const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
