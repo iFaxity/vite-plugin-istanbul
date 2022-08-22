@@ -3,7 +3,9 @@ import { Plugin, TransformResult, createLogger } from 'vite';
 import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
 import { loadNycConfig } from '@istanbuljs/load-nyc-config';
-import { yellow } from 'picocolors';
+import picocolors from 'picocolors';
+
+const { yellow } = picocolors;
 
 // Required for typing to work in configureServer()
 declare global {
