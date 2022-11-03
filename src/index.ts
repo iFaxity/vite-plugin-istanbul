@@ -155,10 +155,11 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         res.end(data);
       });
     },
-    transform(srcCode, id) {
-      if (!enabled || id.startsWith(MODULE_PREFIX) || id.startsWith(NULL_STRING)) {
+    transform(srcCode, id, options) {
+      if (!enabled || options?.ssr || id.startsWith(MODULE_PREFIX) || id.startsWith(NULL_STRING)) {
         // do not transform if this is a dep
         // do not transform if plugin is not enabled
+        // do not transform if ssr
         return;
       }
 
