@@ -26,7 +26,7 @@ declare module '@istanbuljs/load-nyc-config' {
   export function loadNycConfig(opts: {
     cwd?: string,
     nycrcPath?: string,
-  }): NYCConfig;
+  }): Promise<NYCConfig>;
 }
 
 declare module 'test-exclude' {
