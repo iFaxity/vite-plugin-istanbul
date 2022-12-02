@@ -53,11 +53,11 @@ function getEnvVariable(key: string, prefix: string|string[], env: Record<string
   return env[`${prefix}${key}`];
 }
 
-function createTestExclude(opts: IstanbulPluginOptions): TestExclude {
+async function createTestExclude(opts: IstanbulPluginOptions): Promise<TestExclude> {
   const { nycrcPath, include, exclude, extension } = opts;
   const cwd = opts.cwd ?? process.cwd();
 
-  const nycConfig = loadNycConfig({
+  const nycConfig = await loadNycConfig({
     cwd,
     nycrcPath,
   });
@@ -79,7 +79,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
   const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
 
   const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
-  const testExclude = createTestExclude(opts);
+  let testExclude: TestExclude;
   const instrumenter = createInstrumenter({
     coverageGlobalScopeFunc: false,
     coverageGlobalScope: 'window',
@@ -100,7 +100,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
     enforce: 'post',
-    config(config) {
+    async config(config) {
       // If sourcemap is not set (either undefined or false)
       if (!config.build?.sourcemap) {
         logger.warn(`${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
@@ -109,6 +109,8 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         // Enforce sourcemapping,
         config.build = config.build || {};
         config.build.sourcemap = true;
+
+        testExclude = await createTestExclude(opts)
       }
     },
     configResolved(config) {
