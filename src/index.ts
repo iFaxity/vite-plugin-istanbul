@@ -109,9 +109,8 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         // Enforce sourcemapping,
         config.build = config.build || {};
         config.build.sourcemap = true;
-
-        testExclude = await createTestExclude(opts)
       }
+      testExclude = await createTestExclude(opts)
     },
     configResolved(config) {
       // We need to check if the plugin should enable after all configuration is resolved
