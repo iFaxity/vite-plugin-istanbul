@@ -1,4 +1,4 @@
-name: '\U0001F680 New feature proposal'
+name: "\U0001F680 New feature proposal"
 description: Propose a new feature to be added to vite-plugin-istanbul
 labels: 
   - enhancement
