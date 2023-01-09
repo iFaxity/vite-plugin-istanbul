@@ -7,12 +7,19 @@ declare module 'istanbul-lib-instrument' {
   }
 
   export function createInstrumenter(opts: {
-    coverageGlobalScopeFunc?: boolean,
+    coverageVariable?: string;
+    reportLogic?: boolean;
+    preserveComments?: boolean;
+    compact?: boolean;
+    esModules?: boolean;
+    autoWrap?: boolean;
+    produceSourceMap?: boolean;
+    ignoreClassMethods?: string[];
+    sourceMapUrlCallback?(filename: string, sourceMapUrl: string): void;
+    debug?: boolean;
+    parserPlugins?: any[];
     coverageGlobalScope?: string;
-    preserveComments?: boolean,
-    produceSourceMap?: boolean,
-    autoWrap?: boolean,
-    esModules?: boolean,
+    coverageGlobalScopeFunc?: boolean;
   }): Instrumenter;
 }
 
@@ -24,23 +31,23 @@ declare module '@istanbuljs/load-nyc-config' {
   }
 
   export function loadNycConfig(opts: {
-    cwd?: string,
-    nycrcPath?: string,
+    cwd?: string;
+    nycrcPath?: string;
   }): Promise<NYCConfig>;
 }
 
 declare module 'test-exclude' {
   class TestExclude {
     constructor(opts: {
-      cwd?: string | string[],
-      include?: string | string[],
-      exclude?: string | string[],
-      extension?: string | string[],
-      excludeNodeModules?: boolean,
+      cwd?: string | string[];
+      include?: string | string[];
+      exclude?: string | string[];
+      extension?: string | string[];
+      excludeNodeModules?: boolean;
     })
 
-    shouldInstrument(filePath:string):boolean
+    shouldInstrument(filePath:string): boolean;
   }
 
-  export = TestExclude
+  export = TestExclude;
 }

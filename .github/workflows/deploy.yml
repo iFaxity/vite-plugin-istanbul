@@ -3,18 +3,18 @@ on:
   push:
     branches:
       - main
+      - next
 
 jobs:
   # Release verison if tests succeeded
   release:
     name: Publish
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
     
       - name: Install dependencies
         run: npm ci

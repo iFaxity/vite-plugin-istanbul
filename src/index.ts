@@ -7,7 +7,7 @@ import picocolors from 'picocolors';
 
 const { yellow } = picocolors;
 
-// Required for typing to work in configureServer()
+// Required for typings to work in configureServer()
 declare global {
   var __coverage__: any;
 }
@@ -87,6 +87,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
     produceSourceMap: true,
     autoWrap: true,
     esModules: true,
+    compact: false,
   });
 
   // Lazy check the active status of the plugin
@@ -95,7 +96,12 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
 
   return {
     name: PLUGIN_NAME,
-    apply: forceBuildInstrument ? 'build' : 'serve',
+    apply(_, env) {
+      // If forceBuildInstrument is true run for both serve and build
+      return forceBuildInstrument
+        ? true
+        : env.command == 'serve';
+    },
     // istanbul only knows how to instrument JavaScript,
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
