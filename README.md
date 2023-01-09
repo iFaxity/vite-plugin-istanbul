@@ -7,8 +7,7 @@ vite-plugin-istanbul
 
 A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar way as the Webpack Loader `istanbul-instrumenter-loader`. Only intended for use in development while running tests.
 
-Version v2.x for Vite v2.0, for Vite v1.0 install v1.x of this plugin.
-However only the v2 version is actively tested and developed.
+Only versions targeting the latest stable Vite version is actively developed.
 
 Installation
 --------------------------
