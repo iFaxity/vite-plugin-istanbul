@@ -73,6 +73,14 @@ async function createTestExclude(opts: IstanbulPluginOptions): Promise<TestExclu
   });
 }
 
+function resolveFilename(id: string): string {
+  // Fix for @vitejs/plugin-vue in serve mode (#67)
+  // To remove the annoying query parameters from the filename
+  const [ filename ] = id.split('?vue');
+
+  return filename;
+}
+
 export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
   const requireEnv = opts?.requireEnv ?? false;
   const checkProd = opts?.checkProd ?? true;
@@ -170,9 +178,11 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         return;
       }
 
-      if (testExclude.shouldInstrument(id)) {
+      const filename = resolveFilename(id);
+
+      if (testExclude.shouldInstrument(filename)) {
         const sourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
-        const code = instrumenter.instrumentSync(srcCode, id, sourceMap);
+        const code = instrumenter.instrumentSync(srcCode, filename, sourceMap);
         const map = instrumenter.lastSourceMap();
 
         // Required to cast to correct mapping value
