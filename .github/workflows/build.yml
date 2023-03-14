@@ -1,14 +1,13 @@
-name: Deploy
+name: Build
 on:
-  push:
+  pull_request:
     branches:
       - main
       - next
 
 jobs:
-  # Release verison if tests succeeded
-  release:
-    name: Publish
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,9 +20,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Release
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
