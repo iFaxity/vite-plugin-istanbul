@@ -50,7 +50,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/ws": "^8.5.3",
-    "typescript": "^4.6.3",
+    "typescript": "^5.0.2",
     "unbuild": "^1.1.2"
   }
 }
