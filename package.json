@@ -46,7 +46,7 @@
     "vite": ">=2.9.1 <= 5"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/ws": "^8.5.3",
