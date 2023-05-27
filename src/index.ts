@@ -90,7 +90,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
   let testExclude: TestExclude;
   const instrumenter = createInstrumenter({
     coverageGlobalScopeFunc: false,
-    coverageGlobalScope: 'window',
+    coverageGlobalScope: 'globalThis',
     preserveComments: true,
     produceSourceMap: true,
     autoWrap: true,
