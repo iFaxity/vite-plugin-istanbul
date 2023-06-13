@@ -4,7 +4,7 @@ import { createInstrumenter } from 'istanbul-lib-instrument';
 import TestExclude from 'test-exclude';
 import { loadNycConfig } from '@istanbuljs/load-nyc-config';
 import picocolors from 'picocolors';
-import {createIdenticalSourceMap} from "./source-map";
+import {createIdentitySourceMap} from "./source-map";
 
 const { yellow } = picocolors;
 
@@ -183,7 +183,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
 
       if (testExclude.shouldInstrument(filename)) {
         // Create a source map to combine with the source map of previous plugins
-        instrumenter.instrumentSync(srcCode, filename, createIdenticalSourceMap(filename, srcCode))
+        instrumenter.instrumentSync(srcCode, filename, createIdentitySourceMap(filename, srcCode))
         const map = instrumenter.lastSourceMap();
 
         // Instrument code using the source map of previous plugins
