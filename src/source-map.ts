@@ -1,13 +1,13 @@
-import * as esprima from 'esprima'
+import * as espree from 'espree'
 import {SourceMapGenerator} from 'source-map'
 
 
 export function createIdenticalSourceMap(file: string, source: string) {
     const gen = new SourceMapGenerator({ file });
-    const tokens = esprima.tokenize(source, { loc: true });
+    const tokens = espree.tokenize(source, { loc: true, ecmaVersion: 'latest' });
 
-    tokens.forEach((token) => {
-        const loc = (token as any).loc.start;
+    tokens.forEach((token: any) => {
+        const loc = token.loc.start;
         gen.addMapping({
             source: file,
             original: loc,

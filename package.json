@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "@istanbuljs/load-nyc-config": "^1.1.0",
-    "esprima": "^4.0.1",
+    "espree": "^9.5.2",
     "istanbul-lib-instrument": "^5.1.0",
     "picocolors": "^1.0.0",
     "test-exclude": "^6.0.0"
@@ -49,7 +49,6 @@
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
-    "@types/esprima": "^4.0.3",
     "@types/node": "^20.2.5",
     "@types/ws": "^8.5.3",
     "typescript": "^5.1.3",
