@@ -186,7 +186,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         instrumenter.instrumentSync(srcCode, filename, createIdenticalSourceMap(filename, srcCode))
         const map = instrumenter.lastSourceMap();
 
-        // Instrument code using the combined source map of previous plugins
+        // Instrument code using the source map of previous plugins
         const sourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
         const code = instrumenter.instrumentSync(srcCode, filename, sourceMap);
 
