@@ -182,16 +182,18 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
       const filename = resolveFilename(id);
 
       if (testExclude.shouldInstrument(filename)) {
-        // Instrument code using the source map of previous plugins
-        const sourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
-        const code = instrumenter.instrumentSync(srcCode, filename, sourceMap);
+        // Instrument code using the combined source map of previous plugins
+        const combinedSourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
+        const code = instrumenter.instrumentSync(srcCode, filename, combinedSourceMap);
 
-        // Create a source map to be combined with the source map of previous plugins.
-        // These source maps must have the same number of optional fields (see https://sourcemaps.info/spec.html)
-        instrumenter.instrumentSync(srcCode, filename, createIdentitySourceMap(filename, srcCode, {
-          file: sourceMap.file,
-          sourceRoot: sourceMap.sourceRoot
-        }))
+        // Create an identity source map with the same number of fields as the combined source map
+        const identitySourceMap = sanitizeSourceMap(createIdentitySourceMap(filename, srcCode, {
+          file: combinedSourceMap.file,
+          sourceRoot: combinedSourceMap.sourceRoot
+        }));
+
+        // Create a result source map to combine with the source maps of previous plugins
+        instrumenter.instrumentSync(srcCode, filename, identitySourceMap);
         const map = instrumenter.lastSourceMap();
 
         // Required to cast to correct mapping value
