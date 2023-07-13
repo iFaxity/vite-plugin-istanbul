@@ -1,9 +1,9 @@
 import * as espree from 'espree'
-import {SourceMapGenerator} from 'source-map'
+import {SourceMapGenerator, StartOfSourceMap} from 'source-map'
 
 
-export function createIdentitySourceMap(file: string, source: string) {
-    const gen = new SourceMapGenerator();
+export function createIdentitySourceMap(file: string, source: string, option: StartOfSourceMap) {
+    const gen = new SourceMapGenerator(option);
     const tokens = espree.tokenize(source, { loc: true, ecmaVersion: 'latest' });
 
     tokens.forEach((token: any) => {
