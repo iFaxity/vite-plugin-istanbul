@@ -39,7 +39,7 @@
   "dependencies": {
     "@istanbuljs/load-nyc-config": "^1.1.0",
     "espree": "^9.6.1",
-    "istanbul-lib-instrument": "^5.1.0",
+    "istanbul-lib-instrument": "^6.0.0",
     "picocolors": "^1.0.0",
     "test-exclude": "^6.0.0"
   },
