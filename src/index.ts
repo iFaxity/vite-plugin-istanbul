@@ -1,10 +1,10 @@
-import type { ExistingRawSourceMap } from 'rollup';
-import { Plugin, TransformResult, createLogger } from 'vite';
-import { createInstrumenter } from 'istanbul-lib-instrument';
-import TestExclude from 'test-exclude';
-import { loadNycConfig } from '@istanbuljs/load-nyc-config';
-import picocolors from 'picocolors';
-import {createIdentitySourceMap} from "./source-map";
+import type { ExistingRawSourceMap } from "rollup";
+import { Plugin, TransformResult, createLogger } from "vite";
+import { createInstrumenter } from "istanbul-lib-instrument";
+import TestExclude from "test-exclude";
+import { loadNycConfig } from "@istanbuljs/load-nyc-config";
+import picocolors from "picocolors";
+import { createIdentitySourceMap } from "./source-map";
 
 const { yellow } = picocolors;
 
@@ -14,9 +14,9 @@ declare global {
 }
 
 export interface IstanbulPluginOptions {
-  include?: string|string[];
-  exclude?: string|string[];
-  extension?: string|string[];
+  include?: string | string[];
+  exclude?: string | string[];
+  extension?: string | string[];
   requireEnv?: boolean;
   cypress?: boolean;
   checkProd?: boolean;
@@ -26,11 +26,11 @@ export interface IstanbulPluginOptions {
 }
 
 // Custom extensions to include .vue files
-const DEFAULT_EXTENSION = ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue'];
-const COVERAGE_PUBLIC_PATH = '/__coverage__';
-const PLUGIN_NAME = 'vite:istanbul';
-const MODULE_PREFIX = '/@modules/';
-const NULL_STRING = '\0';
+const DEFAULT_EXTENSION = [".js", ".cjs", ".mjs", ".ts", ".tsx", ".jsx", ".vue"];
+const COVERAGE_PUBLIC_PATH = "/__coverage__";
+const PLUGIN_NAME = "vite:istanbul";
+const MODULE_PREFIX = "/@modules/";
+const NULL_STRING = "\0";
 
 function sanitizeSourceMap(rawSourceMap: ExistingRawSourceMap): ExistingRawSourceMap {
   // Delete sourcesContent since it is optional and if it contains process.env.NODE_ENV vite will break when trying to replace it
@@ -40,15 +40,15 @@ function sanitizeSourceMap(rawSourceMap: ExistingRawSourceMap): ExistingRawSourc
   return JSON.parse(JSON.stringify(sourceMap));
 }
 
-function getEnvVariable(key: string, prefix: string|string[], env: Record<string, any>): string {
+function getEnvVariable(key: string, prefix: string | string[], env: Record<string, any>): string {
   if (Array.isArray(prefix)) {
-    const envPrefix = prefix.find(pre => {
+    const envPrefix = prefix.find((pre) => {
       const prefixedName = `${pre}${key}`;
 
       return env[prefixedName] != null;
     });
 
-    prefix = envPrefix ?? '';
+    prefix = envPrefix ?? "";
   }
 
   return env[`${prefix}${key}`];
@@ -77,7 +77,7 @@ async function createTestExclude(opts: IstanbulPluginOptions): Promise<TestExclu
 function resolveFilename(id: string): string {
   // Fix for @vitejs/plugin-vue in serve mode (#67)
   // To remove the annoying query parameters from the filename
-  const [ filename ] = id.split('?vue');
+  const [filename] = id.split("?vue");
 
   return filename;
 }
@@ -87,11 +87,11 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
   const checkProd = opts?.checkProd ?? true;
   const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
 
-  const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
+  const logger = createLogger("warn", { prefix: "vite-plugin-istanbul" });
   let testExclude: TestExclude;
   const instrumenter = createInstrumenter({
     coverageGlobalScopeFunc: false,
-    coverageGlobalScope: 'globalThis',
+    coverageGlobalScope: "globalThis",
     preserveComments: true,
     produceSourceMap: true,
     autoWrap: true,
@@ -107,41 +107,43 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
     name: PLUGIN_NAME,
     apply(_, env) {
       // If forceBuildInstrument is true run for both serve and build
-      return forceBuildInstrument
-        ? true
-        : env.command == 'serve';
+      return forceBuildInstrument ? true : env.command == "serve";
     },
     // istanbul only knows how to instrument JavaScript,
     // this allows us to wait until the whole code is JavaScript to
     // instrument and sourcemap
-    enforce: 'post',
+    enforce: "post",
     async config(config) {
       // If sourcemap is not set (either undefined or false)
       if (!config.build?.sourcemap) {
-        logger.warn(`${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
- To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`);
+        logger.warn(
+          `${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
+ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
+        );
 
         // Enforce sourcemapping,
         config.build = config.build || {};
         config.build.sourcemap = true;
       }
-      testExclude = await createTestExclude(opts)
+      testExclude = await createTestExclude(opts);
     },
     configResolved(config) {
       // We need to check if the plugin should enable after all configuration is resolved
       // As config can be modified by other plugins and from .env variables
       const { isProduction, env } = config;
       const { CYPRESS_COVERAGE } = process.env;
-      const envPrefix = config.envPrefix ?? 'VITE_';
+      const envPrefix = config.envPrefix ?? "VITE_";
 
       const envCoverage = opts.cypress
         ? CYPRESS_COVERAGE
-        : getEnvVariable('COVERAGE', envPrefix, env);
-      const envVar = envCoverage?.toLowerCase() ?? '';
+        : getEnvVariable("COVERAGE", envPrefix, env);
+      const envVar = envCoverage?.toLowerCase() ?? "";
 
-      if ((checkProd && isProduction && !forceBuildInstrument) ||
-        (!requireEnv && envVar === 'false') ||
-        (requireEnv && envVar !== 'true')) {
+      if (
+        (checkProd && isProduction && !forceBuildInstrument) ||
+        (!requireEnv && envVar === "false") ||
+        (requireEnv && envVar !== "true")
+      ) {
         enabled = false;
       }
     },
@@ -157,7 +159,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
           return next();
         }
 
-        const coverage = (global.__coverage__) ?? null;
+        const coverage = global.__coverage__ ?? null;
         let data: string;
 
         try {
@@ -166,7 +168,7 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
           return next(ex);
         }
 
-        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Content-Type", "application/json");
         res.statusCode = 200;
         res.end(data);
       });
@@ -179,6 +181,14 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         return;
       }
 
+      // Fix for vue Single-File Components instrumentation in build mode.
+      // Don't instrument the html/css for the vue SFC, only the script part.
+      const isVueSFC = /\.vue\b(?=\?|$)/.test(id);
+      const isVueSFCScript = /[?&]type=script\b(?=&|$)/.test(id);
+      if (isVueSFC && !isVueSFCScript) {
+        return;
+      }
+
       const filename = resolveFilename(id);
 
       if (testExclude.shouldInstrument(filename)) {
@@ -187,10 +197,12 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         const code = instrumenter.instrumentSync(srcCode, filename, combinedSourceMap);
 
         // Create an identity source map with the same number of fields as the combined source map
-        const identitySourceMap = sanitizeSourceMap(createIdentitySourceMap(filename, srcCode, {
-          file: combinedSourceMap.file,
-          sourceRoot: combinedSourceMap.sourceRoot
-        }));
+        const identitySourceMap = sanitizeSourceMap(
+          createIdentitySourceMap(filename, srcCode, {
+            file: combinedSourceMap.file,
+            sourceRoot: combinedSourceMap.sourceRoot,
+          })
+        );
 
         // Create a result source map to combine with the source maps of previous plugins
         instrumenter.instrumentSync(srcCode, filename, identitySourceMap);
