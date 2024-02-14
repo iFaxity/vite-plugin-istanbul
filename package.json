@@ -19,7 +19,8 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
   },
   "homepage": "https://github.com/ifaxity/vite-plugin-istanbul",
   "repository": {
