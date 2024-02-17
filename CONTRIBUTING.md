@@ -1,26 +1,30 @@
-# Contributing
+Contributing
+===================
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. 
+email, or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
-## Pull Request Process
+Pull Request Process
+--------------------------
 
-1. Ensure any install or build dependencies are removed before the end of the layer when doing a 
+1. Ensure any install or build dependencies are removed before the end of the layer when doing a
    build.
-2. Update the README.md with details of changes to the interface, this includes new environment 
+2. Update the README.md with details of changes to the interface, this includes new environment
    variables, exposed ports, useful file locations and container parameters.
 3. The commits in the PR MUST be in Angular Commit format (See [Commit Message Guidelines below](#commit).
 
-## <a name="commit"></a> Commit Message Guidelines
+<a name="commit"></a> Commit Message Guidelines
+----------------------------------------------------
 
-We have very precise rules over how our git commit messages can be formatted.  This leads to **more
-readable messages** that are easy to follow when looking through the **project history**.  But also,
+We have very precise rules over how our git commit messages can be formatted. This leads to **more
+readable messages** that are easy to follow when looking through the **project history**. But also,
 we use the git commit messages to **generate the change log**.
 
 ### Commit Message Format
-Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
+
+Each commit message consists of a **header**, a **body** and a **footer**. The header has a special
 format that includes a **type**, a **scope** and a **subject**:
 
 ```
@@ -43,6 +47,7 @@ Samples: (even more [samples](https://github.com/angular/angular/commits/master)
 ```
 docs(changelog): update changelog to beta.5
 ```
+
 ```
 fix(release): need to depend on latest rxjs and zone.js
 
@@ -50,41 +55,46 @@ The version in our package.json gets copied to the one we publish, and users nee
 ```
 
 ### Revert
+
 If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
 ### Type
+
 Must be one of the following:
 
-* **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-* **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
-* **docs**: Documentation only changes
-* **break**: A breaking change (major in SemVer)
-* **feat**: A new feature (minor in SemVer)
-* **fix**: A bug fix (patch in SemVer)
-* **perf**: A code change that improves performance
-* **refactor**: A code change that neither fixes a bug nor adds a feature
-* **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-* **test**: Adding missing tests or correcting existing tests
+- **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- **docs**: Documentation only changes
+- **break**: A breaking change (major in SemVer)
+- **feat**: A new feature (minor in SemVer)
+- **fix**: A bug fix (patch in SemVer)
+- **perf**: A code change that improves performance
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **test**: Adding missing tests or correcting existing tests
 
 ### Subject
+
 The subject contains a succinct description of the change:
 
-* use the imperative, present tense: "change" not "changed" nor "changes"
-* don't capitalize the first letter
-* no dot (.) at the end
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
 
 ### Body
+
 Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
 The body should include the motivation for the change and contrast this with previous behavior.
 
 ### Footer
+
 The footer should contain any information about **Breaking Changes** and is also the place to
 reference GitHub issues that this commit **Closes**.
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
 
-
-## Code of Conduct
+Code of Conduct
+----------------------
 
 ### Our Pledge
 
@@ -100,21 +110,21 @@ orientation.
 Examples of behavior that contributes to creating a positive environment
 include:
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+- Using welcoming and inclusive language
+- Being respectful of differing viewpoints and experiences
+- Gracefully accepting constructive criticism
+- Focusing on what is best for the community
+- Showing empathy towards other community members
 
 Examples of unacceptable behavior by participants include:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or
-advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic
+- The use of sexualized language or imagery and unwelcome sexual attention or
+  advances
+- Trolling, insulting/derogatory comments, and personal or political attacks
+- Public or private harassment
+- Publishing others' private information, such as a physical or electronic
   address, without explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
+- Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
 ### Our Responsibilities

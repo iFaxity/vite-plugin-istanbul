@@ -2,7 +2,11 @@ declare module 'istanbul-lib-instrument' {
   import { ExistingRawSourceMap } from 'rollup';
 
   interface Instrumenter {
-    instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap): string;
+    instrumentSync(
+      code: string,
+      filename: string,
+      inputSourceMap?: ExistingRawSourceMap
+    ): string;
     lastSourceMap(): ExistingRawSourceMap;
   }
 
@@ -44,9 +48,9 @@ declare module 'test-exclude' {
       exclude?: string | string[];
       extension?: string | string[];
       excludeNodeModules?: boolean;
-    })
+    });
 
-    shouldInstrument(filePath:string): boolean;
+    shouldInstrument(filePath: string): boolean;
   }
 
   export = TestExclude;
@@ -62,25 +66,25 @@ declare module 'espree' {
       jsx?: boolean;
     };
     ecmaVersion?:
-        | 3
-        | 5
-        | 6
-        | 7
-        | 8
-        | 9
-        | 10
-        | 11
-        | 12
-        | 2015
-        | 2016
-        | 2017
-        | 2018
-        | 2019
-        | 2020
-        | 2021
-        | 2022
-        | 2023
-        | 'latest';
+      | 3
+      | 5
+      | 6
+      | 7
+      | 8
+      | 9
+      | 10
+      | 11
+      | 12
+      | 2015
+      | 2016
+      | 2017
+      | 2018
+      | 2019
+      | 2020
+      | 2021
+      | 2022
+      | 2023
+      | 'latest';
     loc?: boolean;
     range?: boolean;
     sourceType?: 'script' | 'module';
