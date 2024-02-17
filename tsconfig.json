@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": [ "dom" ],
+    "lib": ["dom"],
     "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true,
@@ -13,6 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": [ "src/*" ],
-  "exclude": [ "**/node_modules" ]
+  "include": ["src/*"],
+  "exclude": ["**/node_modules"]
 }
