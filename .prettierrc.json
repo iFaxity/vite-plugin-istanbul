@@ -9,5 +9,10 @@
   "arrowParens": "always",
   "singleAttributePerLine": true,
   "semi": true,
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^[./]"
+  ],
   "plugins": ["@ianvs/prettier-plugin-sort-imports"]
 }
