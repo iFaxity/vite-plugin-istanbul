@@ -157,12 +157,13 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
       // If sourcemap is not set (either undefined or false)
       if (!config.build?.sourcemap) {
         logger.warn(
-          `${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
- To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
+          `${PLUGIN_NAME}> ${yellow(
+            "Sourcemaps was automatically enabled for code coverage to be accurate.\n To hide this message set build.sourcemap to true, 'inline' or 'hidden'."
+          )}`
         );
 
         // Enforce sourcemapping,
-        config.build = config.build || {};
+        config.build ??= {};
         config.build.sourcemap = true;
       }
       testExclude = await createTestExclude(opts);
