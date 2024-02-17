@@ -1,9 +1,9 @@
-import type { ExistingRawSourceMap } from "rollup";
-import { Plugin, TransformResult, createLogger } from "vite";
-import { createInstrumenter } from "istanbul-lib-instrument";
-import TestExclude from "test-exclude";
 import { loadNycConfig } from "@istanbuljs/load-nyc-config";
+import { createInstrumenter } from "istanbul-lib-instrument";
 import picocolors from "picocolors";
+import type { ExistingRawSourceMap } from "rollup";
+import TestExclude from "test-exclude";
+import { Plugin, TransformResult, createLogger } from "vite";
 import { createIdentitySourceMap } from "./source-map";
 
 const { yellow } = picocolors;
@@ -80,6 +80,46 @@ function resolveFilename(id: string): string {
   const [filename] = id.split("?vue");
 
   return filename;
+}
+
+/** # Fix for vue Single-File Components instrumentation in build mode. (cf issue #96)
+ *
+ * ## Option API SFC splits file into 2
+ *
+ * 1. id: /path/to/file.vue which contains all the code **What we need to instrument**
+ * 2. id: /path/to/file.vue?vue&type=style&... which contains no source code
+ *
+ * ## Composition API SFC splits file into 3 chunks
+ *
+ * 1. id: /path/to/file.vue which contains only impors and exports but no user's source code
+ * 2. id: /path/to/file.vue?vue&type=style&... which contains no source code
+ * 3. id: /path/to/file.vue?vue&type=script&... which contains all the user's source code **What we need to instrument**
+ *
+ * ## Diff of chunk 1
+ *
+ * - Composition API: starts with `import _sfc_main from "/path/to/file.vue?vue&type=script..."\n`
+ * - Option API: starts with `\nconst _sfc_main = {\n`
+ *
+ */
+function canInstrumentChunk(id: string, srcCode: string): boolean {
+  const is1stChunk = id.endsWith(".vue");
+  const is2ndChunk = /\?vue&type=style/.test(id);
+  const is3rdChunk = /\?vue&type=script/.test(id);
+  const isCompositionAPI = /import _sfc_main from/.test(srcCode);
+  if (is2ndChunk) {
+    // never instrument type=style
+    return false;
+  }
+  if (is3rdChunk) {
+    // always instrument type=script
+    return true;
+  }
+  if (is1stChunk) {
+    // instrument 1st chunk only if it's Option API
+    return !isCompositionAPI;
+  }
+  // instrument if not a vue chunk
+  return true;
 }
 
 export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
@@ -180,15 +220,9 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
         // do not transform if ssr
         return;
       }
-
-      // Fix for vue Single-File Components instrumentation in build mode.
-      // Don't instrument the html/css for the vue SFC, only the script part.
-      const isVueSFC = /\.vue\b(?=\?|$)/.test(id);
-      const isVueSFCScript = /[?&]type=script\b(?=&|$)/.test(id);
-      if (isVueSFC && !isVueSFCScript) {
+      if (!canInstrumentChunk(id, srcCode)) {
         return;
       }
-
       const filename = resolveFilename(id);
 
       if (testExclude.shouldInstrument(filename)) {
