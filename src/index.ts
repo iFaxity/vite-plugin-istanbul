@@ -3,8 +3,10 @@ import { createInstrumenter } from 'istanbul-lib-instrument';
 import picocolors from 'picocolors';
 import type { ExistingRawSourceMap } from 'rollup';
 import TestExclude from 'test-exclude';
-import { Plugin, TransformResult, createLogger } from 'vite';
+import { createLogger, Plugin, TransformResult } from 'vite';
+
 import { createIdentitySourceMap } from './source-map';
+import { canInstrumentChunk } from './vue-sfc';
 
 const { yellow } = picocolors;
 
@@ -26,13 +28,23 @@ export interface IstanbulPluginOptions {
 }
 
 // Custom extensions to include .vue files
-const DEFAULT_EXTENSION = ['.js', '.cjs', '.mjs', '.ts', '.tsx', '.jsx', '.vue'];
+const DEFAULT_EXTENSION = [
+  '.js',
+  '.cjs',
+  '.mjs',
+  '.ts',
+  '.tsx',
+  '.jsx',
+  '.vue',
+];
 const COVERAGE_PUBLIC_PATH = '/__coverage__';
 const PLUGIN_NAME = 'vite:istanbul';
 const MODULE_PREFIX = '/@modules/';
 const NULL_STRING = '\0';
 
-function sanitizeSourceMap(rawSourceMap: ExistingRawSourceMap): ExistingRawSourceMap {
+function sanitizeSourceMap(
+  rawSourceMap: ExistingRawSourceMap
+): ExistingRawSourceMap {
   // Delete sourcesContent since it is optional and if it contains process.env.NODE_ENV vite will break when trying to replace it
   const { sourcesContent, ...sourceMap } = rawSourceMap;
 
@@ -40,7 +52,11 @@ function sanitizeSourceMap(rawSourceMap: ExistingRawSourceMap): ExistingRawSourc
   return JSON.parse(JSON.stringify(sourceMap));
 }
 
-function getEnvVariable(key: string, prefix: string | string[], env: Record<string, any>): string {
+function getEnvVariable(
+  key: string,
+  prefix: string | string[],
+  env: Record<string, any>
+): string {
   if (Array.isArray(prefix)) {
     const envPrefix = prefix.find((pre) => {
       const prefixedName = `${pre}${key}`;
@@ -54,7 +70,9 @@ function getEnvVariable(key: string, prefix: string | string[], env: Record<stri
   return env[`${prefix}${key}`];
 }
 
-async function createTestExclude(opts: IstanbulPluginOptions): Promise<TestExclude> {
+async function createTestExclude(
+  opts: IstanbulPluginOptions
+): Promise<TestExclude> {
   const { nycrcPath, include, exclude, extension } = opts;
   const cwd = opts.cwd ?? process.cwd();
 
@@ -82,47 +100,9 @@ function resolveFilename(id: string): string {
   return filename;
 }
 
-/** # Fix for vue Single-File Components instrumentation in build mode. (cf issue #96)
- *
- * ## Option API SFC splits file into 2
- *
- * 1. id: /path/to/file.vue which contains all the code **What we need to instrument**
- * 2. id: /path/to/file.vue?vue&type=style&... which contains no source code
- *
- * ## Composition API SFC splits file into 3 chunks
- *
- * 1. id: /path/to/file.vue which contains only impors and exports but no user's source code
- * 2. id: /path/to/file.vue?vue&type=style&... which contains no source code
- * 3. id: /path/to/file.vue?vue&type=script&... which contains all the user's source code **What we need to instrument**
- *
- * ## Diff of chunk 1
- *
- * - Composition API: starts with `import _sfc_main from '/path/to/file.vue?vue&type=script...'\n`
- * - Option API: starts with `\nconst _sfc_main = {\n`
- *
- */
-function canInstrumentChunk(id: string, srcCode: string): boolean {
-  const is1stChunk = id.endsWith('.vue');
-  const is2ndChunk = /\?vue&type=style/.test(id);
-  const is3rdChunk = /\?vue&type=script/.test(id);
-  const isCompositionAPI = /import _sfc_main from/.test(srcCode);
-  if (is2ndChunk) {
-    // never instrument type=style
-    return false;
-  }
-  if (is3rdChunk) {
-    // always instrument type=script
-    return true;
-  }
-  if (is1stChunk) {
-    // instrument 1st chunk only if it's Option API
-    return !isCompositionAPI;
-  }
-  // instrument if not a vue chunk
-  return true;
-}
-
-export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin {
+export default function istanbulPlugin(
+  opts: IstanbulPluginOptions = {}
+): Plugin {
   const requireEnv = opts?.requireEnv ?? false;
   const checkProd = opts?.checkProd ?? true;
   const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
@@ -157,9 +137,8 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
       // If sourcemap is not set (either undefined or false)
       if (!config.build?.sourcemap) {
         logger.warn(
-          `${PLUGIN_NAME}> ${yellow(
-            'Sourcemaps was automatically enabled for code coverage to be accurate.\n To hide this message set build.sourcemap to true, "inline" or "hidden".'
-          )}`
+          `${PLUGIN_NAME}> ${yellow(`Sourcemaps was automatically enabled for code coverage to be accurate.
+To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
         );
 
         // Enforce sourcemapping,
@@ -215,11 +194,18 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
       });
     },
     transform(srcCode, id, options) {
-      if (!enabled || options?.ssr || id.startsWith(MODULE_PREFIX) || id.startsWith(NULL_STRING)) {
+      if (
+        !enabled ||
+        options?.ssr ||
+        id.startsWith(MODULE_PREFIX) ||
+        id.startsWith(NULL_STRING)
+      ) {
         // do not transform if this is a dep
         // do not transform if plugin is not enabled
         // do not transform if ssr
         return;
+
+        // Fix for Vue SFC
       }
       if (!canInstrumentChunk(id, srcCode)) {
         return;
@@ -228,8 +214,14 @@ export default function istanbulPlugin(opts: IstanbulPluginOptions = {}): Plugin
 
       if (testExclude.shouldInstrument(filename)) {
         // Instrument code using the combined source map of previous plugins
-        const combinedSourceMap = sanitizeSourceMap(this.getCombinedSourcemap());
-        const code = instrumenter.instrumentSync(srcCode, filename, combinedSourceMap);
+        const combinedSourceMap = sanitizeSourceMap(
+          this.getCombinedSourcemap()
+        );
+        const code = instrumenter.instrumentSync(
+          srcCode,
+          filename,
+          combinedSourceMap
+        );
 
         // Create an identity source map with the same number of fields as the combined source map
         const identitySourceMap = sanitizeSourceMap(

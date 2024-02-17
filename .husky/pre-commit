@@ -1,0 +1,2 @@
+# Run Formatting and linting
+npx lint-staged
