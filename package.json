@@ -63,5 +63,8 @@
     "prettier": "3.2.5",
     "typescript": "5.4.5",
     "unbuild": "2.0.0"
+  },
+  "engines": {
+    "node": "^20.12.2"
   }
 }
