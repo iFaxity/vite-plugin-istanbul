@@ -6,14 +6,14 @@
   "files": [
     "dist/*"
   ],
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": null
     }
   },
   "scripts": {
@@ -51,17 +51,17 @@
     "vite": ">=4 <=6"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@types/node": "^20.12.7",
-    "@types/ws": "^8.5.10",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
-    "prettier": "^3.2.5",
-    "typescript": "^5.4.5",
-    "unbuild": "^2.0.0"
+    "@commitlint/cli": "19.3.0",
+    "@commitlint/config-conventional": "19.2.2",
+    "@ianvs/prettier-plugin-sort-imports": "4.2.1",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "@types/node": "20.12.7",
+    "@types/ws": "8.5.10",
+    "husky": "9.0.11",
+    "lint-staged": "15.2.2",
+    "prettier": "3.2.5",
+    "typescript": "5.4.5",
+    "unbuild": "2.0.0"
   }
 }
