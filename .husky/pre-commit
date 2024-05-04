@@ -1,2 +1,2 @@
 # Run Formatting and linting
-npx lint-staged
+pnpm dlx lint-staged
