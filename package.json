@@ -64,6 +64,7 @@
     "typescript": "5.4.5",
     "unbuild": "2.0.0"
   },
+  "packageManager": "pnpm@9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879",
   "engines": {
     "node": "^20.12.2"
   }
