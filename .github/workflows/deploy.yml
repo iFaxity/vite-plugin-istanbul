@@ -16,7 +16,7 @@ jobs:
         with:
           node-version-file: '.node-version'
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
