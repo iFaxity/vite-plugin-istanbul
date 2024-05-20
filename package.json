@@ -43,7 +43,7 @@
     "@istanbuljs/load-nyc-config": "^1.1.0",
     "espree": "^10.0.1",
     "istanbul-lib-instrument": "^6.0.2",
-    "picocolors": "^1.0.0",
+    "picocolors": "^1.0.1",
     "source-map": "^0.7.4",
     "test-exclude": "^6.0.0"
   },
