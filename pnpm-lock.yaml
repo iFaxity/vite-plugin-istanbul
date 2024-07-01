@@ -37,8 +37,8 @@ importers:
         specifier: 19.2.2
         version: 19.2.2
       '@ianvs/prettier-plugin-sort-imports':
-        specifier: 4.2.1
-        version: 4.2.1(prettier@3.3.2)
+        specifier: 4.3.0
+        version: 4.3.0(prettier@3.3.2)
       '@semantic-release/changelog':
         specifier: 6.0.3
         version: 6.0.3(semantic-release@23.0.8(typescript@5.5.2))
@@ -516,8 +516,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@ianvs/prettier-plugin-sort-imports@4.2.1':
-    resolution: {integrity: sha512-NKN1LVFWUDGDGr3vt+6Ey3qPeN/163uR1pOPAlkWpgvAqgxQ6kSdUf1F0it8aHUtKRUzEGcK38Wxd07O61d7+Q==}
+  '@ianvs/prettier-plugin-sort-imports@4.3.0':
+    resolution: {integrity: sha512-OOMtUcO4J3LoL63dOKAe7bn+lSRRPeit2DqNHpx+wvBp3Grejo2PMaK4Mp1mwy8pnat64ccSgk/lBZbsAdLErw==}
     peerDependencies:
       '@vue/compiler-sfc': 2.7.x || 3.x
       prettier: 2 || 3
@@ -3520,7 +3520,7 @@ snapshots:
   '@esbuild/win32-x64@0.20.2':
     optional: true
 
-  '@ianvs/prettier-plugin-sort-imports@4.2.1(prettier@3.3.2)':
+  '@ianvs/prettier-plugin-sort-imports@4.3.0(prettier@3.3.2)':
     dependencies:
       '@babel/core': 7.24.5
       '@babel/generator': 7.24.5
