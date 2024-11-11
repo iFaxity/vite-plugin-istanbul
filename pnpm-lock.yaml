@@ -5704,7 +5704,7 @@ snapshots:
 
   parse-json@8.1.0:
     dependencies:
-      '@babel/code-frame': 7.24.2
+      '@babel/code-frame': 7.26.2
       index-to-position: 0.1.2
       type-fest: 4.18.1
 
