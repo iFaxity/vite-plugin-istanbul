@@ -62,7 +62,7 @@
     "lint-staged": "15.2.10",
     "prettier": "3.3.3",
     "rollup": "4.27.3",
-    "typescript": "5.6.3",
+    "typescript": "5.7.2",
     "unbuild": "2.0.0"
   },
   "packageManager": "pnpm@9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879"
