@@ -25,6 +25,7 @@ export interface IstanbulPluginOptions {
   forceBuildInstrument?: boolean;
   cwd?: string;
   nycrcPath?: string;
+  generatorOpts?: object;
 }
 
 // Custom extensions to include .vue files
@@ -117,6 +118,7 @@ export default function istanbulPlugin(
     autoWrap: true,
     esModules: true,
     compact: false,
+    generatorOpts: { ...opts?.generatorOpts },
   });
 
   // Lazy check the active status of the plugin

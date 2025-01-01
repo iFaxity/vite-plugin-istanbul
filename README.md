@@ -42,6 +42,7 @@ Creates the vite plugin from a set of optional plugin options.
 - `opts.checkProd {boolean}` - Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.
 - `opts.forceBuildInstrument {boolean}` - Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.
 - `opts.nycrcPath {string}` - Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.
+- `opts.generatorOpts {object}` - A `generatorOpts` object that is passed down to the Babel transformer. See [here](https://babeljs.io/docs/babel-generator#options) for reference. Defaults to empty object.
 
 Notes
 --------------------------

@@ -24,6 +24,7 @@ declare module 'istanbul-lib-instrument' {
     parserPlugins?: any[];
     coverageGlobalScope?: string;
     coverageGlobalScopeFunc?: boolean;
+    generatorOpts?: object;
   }): Instrumenter;
 }
 
