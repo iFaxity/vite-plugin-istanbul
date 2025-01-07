@@ -56,14 +56,14 @@
     "@ianvs/prettier-plugin-sort-imports": "4.4.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/node": "22.10.2",
+    "@types/node": "22.10.5",
     "@types/ws": "8.5.13",
     "husky": "9.1.7",
     "lint-staged": "15.3.0",
     "prettier": "3.4.2",
-    "rollup": "4.29.1",
+    "rollup": "4.30.0",
     "typescript": "5.7.2",
-    "unbuild": "3.0.1"
+    "unbuild": "3.2.0"
   },
   "packageManager": "pnpm@9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879"
 }
