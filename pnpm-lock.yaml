@@ -28,7 +28,7 @@ importers:
         version: 7.0.1
       vite:
         specifier: '>=4 <=6'
-        version: 5.4.8(@types/node@22.10.2)
+        version: 5.4.8(@types/node@22.10.5)
     devDependencies:
       '@commitlint/cli':
         specifier: 19.6.1
@@ -45,6 +45,9 @@ importers:
       '@semantic-release/git':
         specifier: 10.0.1
         version: 10.0.1(semantic-release@23.0.8(typescript@5.7.2))
+      '@types/babel__generator':
+        specifier: 7.6.8
+        version: 7.6.8
       '@types/node':
         specifier: 22.10.5
         version: 22.10.5
@@ -995,14 +998,14 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
+  '@types/babel__generator@7.6.8':
+    resolution: {integrity: sha512-ASsj+tpEDsEiFr1arWrlN6V3mdfjRMZt6LtK/Vp/kreFLnr5QH5+DhvD5nINYZXzwJvXeGq+05iUXcAzVrqWtw==}
+
   '@types/conventional-commits-parser@5.0.0':
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
-
-  '@types/node@22.10.2':
-    resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
 
   '@types/node@22.10.5':
     resolution: {integrity: sha512-F8Q+SeGimwOo86fiovQh8qiXfFEh2/ocYv7tU5pJ3EXMSSxk1Joj5wefpFK2fHTf/N6HKGSxIDBT9f3gCxXPkQ==}
@@ -4157,16 +4160,15 @@ snapshots:
 
   '@trysound/sax@0.2.0': {}
 
+  '@types/babel__generator@7.6.8':
+    dependencies:
+      '@babel/types': 7.26.3
+
   '@types/conventional-commits-parser@5.0.0':
     dependencies:
       '@types/node': 22.10.5
 
   '@types/estree@1.0.6': {}
-
-  '@types/node@22.10.2':
-    dependencies:
-      undici-types: 6.20.0
-    optional: true
 
   '@types/node@22.10.5':
     dependencies:
@@ -6419,13 +6421,13 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite@5.4.8(@types/node@22.10.2):
+  vite@5.4.8(@types/node@22.10.5):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
       rollup: 4.24.0
     optionalDependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.10.5
       fsevents: 2.3.3
 
   which-boxed-primitive@1.0.2:
