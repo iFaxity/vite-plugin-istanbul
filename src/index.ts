@@ -1,4 +1,5 @@
 import { loadNycConfig } from '@istanbuljs/load-nyc-config';
+import type { GeneratorOptions } from 'babel__generator';
 import { createInstrumenter } from 'istanbul-lib-instrument';
 import picocolors from 'picocolors';
 import type { ExistingRawSourceMap } from 'rollup';
@@ -25,6 +26,7 @@ export interface IstanbulPluginOptions {
   forceBuildInstrument?: boolean;
   cwd?: string;
   nycrcPath?: string;
+  generatorOpts?: GeneratorOptions;
 }
 
 // Custom extensions to include .vue files
@@ -117,6 +119,7 @@ export default function istanbulPlugin(
     autoWrap: true,
     esModules: true,
     compact: false,
+    generatorOpts: { ...opts?.generatorOpts },
   });
 
   // Lazy check the active status of the plugin

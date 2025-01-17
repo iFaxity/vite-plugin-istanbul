@@ -1,5 +1,6 @@
 declare module 'istanbul-lib-instrument' {
   import { ExistingRawSourceMap } from 'rollup';
+  import { GeneratorOptions } from 'babel__generator';
 
   interface Instrumenter {
     instrumentSync(
@@ -24,6 +25,7 @@ declare module 'istanbul-lib-instrument' {
     parserPlugins?: any[];
     coverageGlobalScope?: string;
     coverageGlobalScopeFunc?: boolean;
+    generatorOpts?: GeneratorOptions;
   }): Instrumenter;
 }
 
