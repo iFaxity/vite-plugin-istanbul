@@ -48,7 +48,7 @@
     "test-exclude": "^7.0.1"
   },
   "peerDependencies": {
-    "vite": ">=4 <=6"
+    "vite": ">=4 <=7"
   },
   "devDependencies": {
     "@commitlint/cli": "19.6.1",
