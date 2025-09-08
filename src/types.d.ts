@@ -9,6 +9,7 @@ declare module 'istanbul-lib-instrument' {
       inputSourceMap?: ExistingRawSourceMap
     ): string;
     lastSourceMap(): ExistingRawSourceMap;
+    fileCoverage: object;
   }
 
   export function createInstrumenter(opts: {
