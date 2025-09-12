@@ -27,6 +27,7 @@ export interface IstanbulPluginOptions {
   cwd?: string;
   nycrcPath?: string;
   generatorOpts?: GeneratorOptions;
+  onCover?: (fileName: string, fileCoverage: object) => void;
 }
 
 // Custom extensions to include .vue files
@@ -238,6 +239,10 @@ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
         instrumenter.instrumentSync(srcCode, filename, identitySourceMap);
         const map = instrumenter.lastSourceMap();
 
+        const fileCoverage = instrumenter.fileCoverage;
+        if (opts.onCover) {
+          opts.onCover(filename, fileCoverage);
+        }
         // Required to cast to correct mapping value
         return { code, map } as TransformResult;
       }
