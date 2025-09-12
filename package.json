@@ -40,6 +40,7 @@
     "nyc"
   ],
   "dependencies": {
+    "@babel/generator": "^7.28.0",
     "@istanbuljs/load-nyc-config": "^1.1.0",
     "espree": "^10.3.0",
     "istanbul-lib-instrument": "^6.0.3",
