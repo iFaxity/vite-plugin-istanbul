@@ -42,6 +42,7 @@
   "dependencies": {
     "@babel/generator": "^7.28.0",
     "@istanbuljs/load-nyc-config": "^1.1.0",
+    "@types/babel__generator": "7.6.8",
     "espree": "^10.3.0",
     "istanbul-lib-instrument": "^6.0.3",
     "picocolors": "^1.1.1",
@@ -57,7 +58,6 @@
     "@ianvs/prettier-plugin-sort-imports": "4.4.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/babel__generator": "7.6.8",
     "@types/node": "22.10.7",
     "@types/ws": "8.5.13",
     "husky": "9.1.7",
@@ -67,5 +67,5 @@
     "typescript": "5.7.3",
     "unbuild": "3.3.1"
   },
-  "packageManager": "pnpm@9.0.6+sha1.648f6014eb363abb36618f2ba59282a9eeb3e879"
+  "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
 }
