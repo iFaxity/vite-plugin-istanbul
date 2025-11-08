@@ -6,8 +6,6 @@ vite-plugin-istanbul
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/vite-plugin-istanbul?label=Bundle%20size&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 [![npm bundle size (scoped)](https://img.shields.io/bundlephobia/minzip/vite-plugin-istanbul?label=Bundle%20size%20%28gzip%29&style=for-the-badge)](https://npmjs.org/package/vite-plugin-istanbul)
 
-> This project is looking for new maintainers. See CONTRIBUTING.md
-
 A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar way as the Webpack Loader `istanbul-instrumenter-loader`. Only intended for use in development while running tests.
 
 Only versions targeting the latest stable Vite version is actively developed.
@@ -80,12 +78,10 @@ export default {
 };
 ```
 
-Looking for contributors and maintainers
+Contributing
 ---------------------------------------------
 
-This project is not under active development, although we will continue to provide support for current users, but you can change that by joining the team (see CONTRIBUTING.md)
-
-If you use this project and would like to develop it further, please introduce yourself on the [Maintainers wanted](https://github.com/iFaxity/vite-plugin-istanbul/issues/341) ticket.
+Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
 License
 --------------------------
