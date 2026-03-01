@@ -1,0 +1,15 @@
+# This ensures that if a package was previously installed with
+# CI/CD provenance (signatures), it cannot be replaced by a version
+# without it (preventing local-machine hijack publishes).
+trustPolicy: no-downgrade
+
+# This causes the install to fail if any vulnerabilities are found
+# that meet your defined level.
+auditLevel: high
+
+# Ensures every file in the pnpm store matches its original hash.
+verifyStoreIntegrity: true
+
+# Only run verified package scripts
+onlyBuiltDependencies:
+  - esbuild
