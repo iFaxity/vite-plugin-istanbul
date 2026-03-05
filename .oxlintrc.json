@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./node_modules/ultracite/config/oxlint/core/.oxlintrc.json"],
+  "rules": {
+    "eslint/eqeqeq": "off",
+    "eslint/func-style": ["error", "declaration"],
+    "typescript/consistent-type-definitions": ["error", "type"]
+  }
+}

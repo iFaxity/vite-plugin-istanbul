@@ -1,8 +1,23 @@
 {
   "name": "vite-plugin-istanbul",
   "version": "0.0.0",
-  "author": "iFaxity (christian@faxity.se)",
+  "keywords": [
+    "babel",
+    "istanbul",
+    "nyc",
+    "plugin",
+    "vite"
+  ],
+  "homepage": "https://github.com/ifaxity/vite-plugin-istanbul",
+  "bugs": {
+    "url": "https://github.com/ifaxity/vite-plugin-istanbul/issues"
+  },
   "license": "MIT",
+  "author": "iFaxity (christian@faxity.se)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ifaxity/vite-plugin-istanbul.git"
+  },
   "files": [
     "dist/*"
   ],
@@ -19,26 +34,13 @@
   "scripts": {
     "dev": "unbuild --stub",
     "build": "unbuild",
-    "prettier": "prettier --check .",
-    "format": "prettier --write .",
+    "lint": "ultracite check",
+    "lint:fix": "ultracite fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "prepublishOnly": "npm run build",
     "prepare": "husky"
   },
-  "homepage": "https://github.com/ifaxity/vite-plugin-istanbul",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ifaxity/vite-plugin-istanbul.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ifaxity/vite-plugin-istanbul/issues"
-  },
-  "keywords": [
-    "vite",
-    "babel",
-    "plugin",
-    "istanbul",
-    "nyc"
-  ],
   "dependencies": {
     "@babel/generator": "^7.28.0",
     "@istanbuljs/load-nyc-config": "^1.1.0",
@@ -49,23 +51,23 @@
     "source-map": "^0.7.4",
     "test-exclude": "^7.0.1"
   },
-  "peerDependencies": {
-    "vite": ">=4 <=7"
-  },
   "devDependencies": {
-    "@commitlint/cli": "19.6.1",
-    "@commitlint/config-conventional": "19.6.0",
-    "@ianvs/prettier-plugin-sort-imports": "4.4.1",
+    "@commitlint/cli": "20.4.2",
+    "@commitlint/config-conventional": "20.4.2",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@types/node": "22.10.7",
     "@types/ws": "8.5.13",
     "husky": "9.1.7",
-    "lint-staged": "15.4.3",
-    "prettier": "3.4.2",
+    "oxfmt": "0.35.0",
+    "oxlint": "1.50.0",
     "rollup": "4.31.0",
     "typescript": "5.7.3",
+    "ultracite": "7.2.4",
     "unbuild": "3.3.1"
+  },
+  "peerDependencies": {
+    "vite": ">=4 <=7"
   },
   "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
 }
