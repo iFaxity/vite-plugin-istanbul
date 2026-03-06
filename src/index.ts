@@ -6,7 +6,7 @@ import type { ExistingRawSourceMap } from 'rollup';
 import TestExclude from 'test-exclude';
 import { createLogger, Plugin, TransformResult } from 'vite';
 
-import { createIdentitySourceMap } from './source-map';
+import { createCompleteSourceMap, createIdentitySourceMap } from './source-map';
 import { canInstrumentChunk } from './vue-sfc';
 
 const { yellow } = picocolors;
@@ -221,22 +221,35 @@ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
         const combinedSourceMap = sanitizeSourceMap(
           this.getCombinedSourcemap()
         );
+
+        // For Vue SFC files, create a complete source map that covers all compiled lines.
+        // Vite's source map only covers the <script> block, leaving template-generated code
+        // (render function) unmapped, which causes Istanbul to report 0% coverage.
+        const isVueSFC = id.endsWith('.vue') || /\?vue&type=script/.test(id);
+        let sourceMapForInstrument = combinedSourceMap;
+
+        if (isVueSFC) {
+          let originalSource: string | null = null;
+          if (
+            combinedSourceMap.sourcesContent &&
+            combinedSourceMap.sourcesContent[0]
+          ) {
+            originalSource = combinedSourceMap.sourcesContent[0];
+          }
+
+          sourceMapForInstrument = sanitizeSourceMap(
+            createCompleteSourceMap(filename, srcCode, originalSource, {
+              file: combinedSourceMap.file,
+              sourceRoot: combinedSourceMap.sourceRoot,
+            })
+          );
+        }
+
         const code = instrumenter.instrumentSync(
           srcCode,
           filename,
-          combinedSourceMap
+          sourceMapForInstrument
         );
-
-        // Create an identity source map with the same number of fields as the combined source map
-        const identitySourceMap = sanitizeSourceMap(
-          createIdentitySourceMap(filename, srcCode, {
-            file: combinedSourceMap.file,
-            sourceRoot: combinedSourceMap.sourceRoot,
-          })
-        );
-
-        // Create a result source map to combine with the source maps of previous plugins
-        instrumenter.instrumentSync(srcCode, filename, identitySourceMap);
         const map = instrumenter.lastSourceMap();
 
         const fileCoverage = instrumenter.fileCoverage;
