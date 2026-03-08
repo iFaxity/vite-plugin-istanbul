@@ -50,7 +50,7 @@
     "test-exclude": "^8.0.0"
   },
   "peerDependencies": {
-    "vite": ">=4 <=7"
+    "vite": ">=4"
   },
   "devDependencies": {
     "@commitlint/cli": "20.4.3",
