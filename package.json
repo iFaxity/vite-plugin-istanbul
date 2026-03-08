@@ -27,7 +27,7 @@
   "homepage": "https://github.com/ifaxity/vite-plugin-istanbul",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ifaxity/vite-plugin-istanbul.git"
+    "url": "git+https://github.com/ifaxity/vite-plugin-istanbul.git"
   },
   "bugs": {
     "url": "https://github.com/ifaxity/vite-plugin-istanbul/issues"
@@ -39,6 +39,10 @@
     "istanbul",
     "nyc"
   ],
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
   "dependencies": {
     "@babel/generator": "^7.29.1",
     "@istanbuljs/load-nyc-config": "^1.1.0",
