@@ -33,7 +33,7 @@ importers:
         specifier: ^8.0.0
         version: 8.0.0
       vite:
-        specifier: '>=4 <=7'
+        specifier: '>=4'
         version: 5.2.11(@types/node@25.3.5)
     devDependencies:
       '@commitlint/cli':
