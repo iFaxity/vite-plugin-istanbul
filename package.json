@@ -24,13 +24,13 @@
     "prepublishOnly": "npm run build",
     "prepare": "husky"
   },
-  "homepage": "https://github.com/ifaxity/vite-plugin-istanbul",
+  "homepage": "https://github.com/iFaxity/vite-plugin-istanbul",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ifaxity/vite-plugin-istanbul.git"
+    "url": "https://github.com/iFaxity/vite-plugin-istanbul"
   },
   "bugs": {
-    "url": "https://github.com/ifaxity/vite-plugin-istanbul/issues"
+    "url": "https://github.com/iFaxity/vite-plugin-istanbul/issues"
   },
   "keywords": [
     "vite",
