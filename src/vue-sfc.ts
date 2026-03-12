@@ -17,23 +17,28 @@
  * - Option API: starts with `\nconst _sfc_main = {\n`
  *
  */
-export function canInstrumentChunk(id: string, srcCode: string): boolean {
-  const is1stChunk = id.endsWith('.vue');
-  const is2ndChunk = /\?vue&type=style/.test(id);
-  const is3rdChunk = /\?vue&type=script/.test(id);
-  const isCompositionAPI = /import _sfc_main from/.test(srcCode);
-  if (is2ndChunk) {
-    // never instrument type=style
+const STYLE_CHUNK_REGEX = /\?vue&type=style/;
+const SCRIPT_CHUNK_REGEX = /\?vue&type=script/;
+const COMPOSITION_API_REGEX = /import _sfc_main from/;
+
+export function canInstrumentVueChunk(id: string, srcCode: string): boolean {
+  // never instrument type=style
+  if (STYLE_CHUNK_REGEX.test(id)) {
     return false;
   }
-  if (is3rdChunk) {
-    // always instrument type=script
+
+  // always instrument type=script
+  if (SCRIPT_CHUNK_REGEX.test(id)) {
     return true;
   }
-  if (is1stChunk) {
-    // instrument 1st chunk only if it's Option API
+
+  // instrument 1st chunk only if it's Option API
+  if (id.endsWith('.vue')) {
+    const isCompositionAPI = COMPOSITION_API_REGEX.test(srcCode);
+
     return !isCompositionAPI;
   }
+
   // instrument if not a vue chunk
   return true;
 }
