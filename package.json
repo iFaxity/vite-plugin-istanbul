@@ -21,7 +21,7 @@
     "build": "unbuild",
     "prettier": "prettier --check .",
     "format": "prettier --write .",
-    "prepublishOnly": "npm run build",
+    "prepublish": "npm run build",
     "prepare": "husky"
   },
   "homepage": "https://github.com/iFaxity/vite-plugin-istanbul",
