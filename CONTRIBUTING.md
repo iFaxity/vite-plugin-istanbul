@@ -1,13 +1,11 @@
-Contributing
-===================
+# Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
 email, or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
-Pull Request Process
---------------------------
+## Pull Request Process
 
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a
    build.
@@ -15,8 +13,7 @@ Pull Request Process
    variables, exposed ports, useful file locations and container parameters.
 3. The commits in the PR MUST be in Angular Commit format (See [Commit Message Guidelines below](#commit).
 
-<a name="commit"></a> Commit Message Guidelines
-----------------------------------------------------
+## <a name="commit"></a> Commit Message Guidelines
 
 We have very precise rules over how our git commit messages can be formatted. This leads to **more
 readable messages** that are easy to follow when looking through the **project history**. But also,
@@ -93,8 +90,7 @@ reference GitHub issues that this commit **Closes**.
 
 **Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
 
-Code of Conduct
-----------------------
+## Code of Conduct
 
 ### Our Pledge
 

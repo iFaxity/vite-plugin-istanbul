@@ -1,16 +1,19 @@
-declare module 'istanbul-lib-instrument' {
-  import { ExistingRawSourceMap } from 'rollup';
-  import { GeneratorOptions } from 'babel__generator';
+// Required for typings to work in configureServer()
+declare var __coverage__: unknown;
 
-  interface Instrumenter {
+declare module 'istanbul-lib-instrument' {
+  import type { ExistingRawSourceMap } from 'rollup';
+  import type { GeneratorOptions } from 'babel__generator';
+
+  type Instrumenter = {
     instrumentSync(
       code: string,
       filename: string,
       inputSourceMap?: ExistingRawSourceMap
     ): string;
     lastSourceMap(): ExistingRawSourceMap;
-    fileCoverage: object;
-  }
+    fileCoverage: unknown;
+  };
 
   export function createInstrumenter(opts: {
     coverageVariable?: string;
@@ -23,7 +26,7 @@ declare module 'istanbul-lib-instrument' {
     ignoreClassMethods?: string[];
     sourceMapUrlCallback?(filename: string, sourceMapUrl: string): void;
     debug?: boolean;
-    parserPlugins?: any[];
+    parserPlugins?: unknown[];
     coverageGlobalScope?: string;
     coverageGlobalScopeFunc?: boolean;
     generatorOpts?: GeneratorOptions;
@@ -31,11 +34,11 @@ declare module 'istanbul-lib-instrument' {
 }
 
 declare module '@istanbuljs/load-nyc-config' {
-  export interface NYCConfig {
+  export type NYCConfig = {
     extension?: string[];
     include?: string[];
     exclude?: string[];
-  }
+  };
 
   export function loadNycConfig(opts: {
     cwd?: string;
@@ -61,7 +64,7 @@ declare module 'test-exclude' {
 
 declare module 'espree' {
   // https://github.com/eslint/espree#options
-  export interface Options {
+  export type Options = {
     comment?: boolean;
     ecmaFeatures?: {
       globalReturn?: boolean;
@@ -92,7 +95,7 @@ declare module 'espree' {
     range?: boolean;
     sourceType?: 'script' | 'module';
     tokens?: boolean;
-  }
+  };
   // https://github.com/eslint/espree#tokenize
   export function tokenize(code: string, options?: Options): any;
 }

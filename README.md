@@ -1,5 +1,4 @@
-vite-plugin-istanbul
-==========================
+# vite-plugin-istanbul
 
 [![Codacy grade](https://img.shields.io/codacy/grade/a0c628b128c044269faefc1da74382f7?style=for-the-badge&logo=codacy)](https://www.codacy.com/gh/iFaxity/vite-plugin-istanbul/dashboard)
 [![npm (scoped)](https://img.shields.io/npm/v/vite-plugin-istanbul?style=for-the-badge&logo=npm)](https://npmjs.org/package/vite-plugin-istanbul)
@@ -12,16 +11,15 @@ A Vite plugin to instrument your code for nyc/istanbul code coverage. In similar
 
 Only versions targeting the latest stable Vite version is actively developed.
 
-Installation
---------------------------
+## Installation
+
 `npm i -D vite-plugin-istanbul`
 
 or if you use yarn
 
 `yarn add -D vite-plugin-istanbul`
 
-API
---------------------------
+## API
 
 ```js
 import IstanbulPlugin from 'vite-plugin-istanbul';
@@ -48,8 +46,7 @@ Creates the vite plugin from a set of optional plugin options.
 | `nycrcPath`            | `string`           | Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.                                                                                                                                                           |
 | `generatorOpts`        | `GeneratorOptions` | A set of generator options that are passed down to the Babel transformer. See [here](https://babeljs.io/docs/babel-generator#options) for reference. Defaults to empty object.                                                                                                                                        |
 
-Notes
---------------------------
+## Notes
 
 As of v2.1.0 you can toggle the coverage off by setting the env variable `VITE_COVERAGE='false'`, by default it will always instrument the code. To require the explicit definition of the variable, set the option `requireEnv` to **true**.
 
@@ -57,8 +54,7 @@ This plugin also requires the Vite configuration [build.sourcemap](https://vitej
 But the plugin will automatically default to **true** if it is missing in order to give accurate code coverage.
 The plugin will notify when this happens in order for a developer to fix it. This notification will show even when the plugin is disabled by e.g `opts.requireEnv`, `VITE_COVERAGE=false`. This is due to a limitation of the API for this kind of feature.
 
-Examples
---------------------------
+## Examples
 
 To use this plugin define it using vite.config.js
 
@@ -80,14 +76,12 @@ export default {
 };
 ```
 
-Looking for contributors and maintainers
----------------------------------------------
+## Looking for contributors and maintainers
 
 This project is not under active development, although we will continue to provide support for current users, but you can change that by joining the team (see CONTRIBUTING.md)
 
 If you use this project and would like to develop it further, please introduce yourself on the [Maintainers wanted](https://github.com/iFaxity/vite-plugin-istanbul/issues/341) ticket.
 
-License
---------------------------
+## License
 
 [MIT](./LICENSE)
