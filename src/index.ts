@@ -24,6 +24,7 @@ export interface IstanbulPluginOptions {
   cypress?: boolean;
   checkProd?: boolean;
   forceBuildInstrument?: boolean;
+  enableInSSR?: boolean;
   cwd?: string;
   nycrcPath?: string;
   generatorOpts?: GeneratorOptions;
@@ -109,6 +110,7 @@ export default function istanbulPlugin(
   const requireEnv = opts?.requireEnv ?? false;
   const checkProd = opts?.checkProd ?? true;
   const forceBuildInstrument = opts?.forceBuildInstrument ?? false;
+  const enableInSSR = opts?.enableInSSR ?? false;
 
   const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
   let testExclude: TestExclude;
@@ -200,13 +202,13 @@ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
     transform(srcCode, id, options) {
       if (
         !enabled ||
-        options?.ssr ||
+        (!enableInSSR && options?.ssr) ||
         id.startsWith(MODULE_PREFIX) ||
         id.startsWith(NULL_STRING)
       ) {
         // do not transform if this is a dep
         // do not transform if plugin is not enabled
-        // do not transform if ssr
+        // do not transform if ssr and not enableInSSR
         return;
 
         // Fix for Vue SFC
