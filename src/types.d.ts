@@ -8,7 +8,7 @@ declare module 'istanbul-lib-instrument' {
       filename: string,
       inputSourceMap?: ExistingRawSourceMap
     ): string;
-    lastSourceMap(): ExistingRawSourceMap;
+    lastSourceMap(): ExistingRawSourceMap | null;
     fileCoverage: object;
   }
 

@@ -23,7 +23,7 @@ declare global {
  */
 export interface CustomInstrumenter {
   instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap): string;
-  lastSourceMap(): ExistingRawSourceMap;
+  lastSourceMap(): ExistingRawSourceMap | null;
   fileCoverage: object;
 }
 
