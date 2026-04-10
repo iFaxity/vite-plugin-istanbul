@@ -47,6 +47,7 @@ Creates the vite plugin from a set of optional plugin options.
 | `forceBuildInstrument` | `boolean`          | Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.                                                                                                                                                                                                                       |
 | `nycrcPath`            | `string`           | Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.                                                                                                                                                           |
 | `generatorOpts`        | `GeneratorOptions` | A set of generator options that are passed down to the Babel transformer. See [here](https://babeljs.io/docs/babel-generator#options) for reference. Defaults to empty object.                                                                                                                                        |
+| `instrumenter`         | `CustomInstrumenter` | Optional custom instrumenter used instead of `istanbul-lib-instrument`. Must implement `instrumentSync(code, filename, inputSourceMap?)`, `lastSourceMap()` and `fileCoverage`. Lets you swap in a faster instrumenter such as [`oxc-coverage-instrument`](https://github.com/fallow-rs/oxc-coverage-instrument). |
 
 Notes
 --------------------------
@@ -75,6 +76,26 @@ export default {
       exclude: ['node_modules', 'test/'],
       extension: ['.js', '.ts', '.vue'],
       requireEnv: true,
+    }),
+  ],
+};
+```
+
+### Using a custom instrumenter
+
+Pass a custom instrumenter via the `instrumenter` option to replace the default `istanbul-lib-instrument`:
+
+```js
+// vite.config.js
+import istanbul from 'vite-plugin-istanbul';
+import { createOxcInstrumenter } from 'oxc-coverage-instrument/vitest';
+
+export default {
+  plugins: [
+    istanbul({
+      include: 'src/*',
+      exclude: ['node_modules', 'test/'],
+      instrumenter: createOxcInstrumenter(),
     }),
   ],
 };
