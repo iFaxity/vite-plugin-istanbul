@@ -16,6 +16,17 @@ declare global {
   var __coverage__: any;
 }
 
+/**
+ * Custom instrumenter interface. Matches the subset of istanbul-lib-instrument's
+ * Instrumenter that this plugin uses. Implement this to use a faster instrumenter
+ * (e.g., oxc-coverage-instrument) while keeping the Istanbul coverage format.
+ */
+export interface CustomInstrumenter {
+  instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap): string;
+  lastSourceMap(): ExistingRawSourceMap | null;
+  fileCoverage: object;
+}
+
 export interface IstanbulPluginOptions {
   include?: string | string[];
   exclude?: string | string[];
@@ -28,6 +39,20 @@ export interface IstanbulPluginOptions {
   nycrcPath?: string;
   generatorOpts?: GeneratorOptions;
   onCover?: (fileName: string, fileCoverage: object) => void;
+  /**
+   * Custom instrumenter to use instead of istanbul-lib-instrument.
+   * Must implement `instrumentSync`, `lastSourceMap`, and `fileCoverage`.
+   *
+   * @example
+   * ```ts
+   * import { createOxcInstrumenter } from 'oxc-coverage-instrument/vitest';
+   *
+   * istanbul({
+   *   instrumenter: createOxcInstrumenter(),
+   * })
+   * ```
+   */
+  instrumenter?: CustomInstrumenter;
 }
 
 // Custom extensions to include .vue files
@@ -112,7 +137,7 @@ export default function istanbulPlugin(
 
   const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
   let testExclude: TestExclude;
-  const instrumenter = createInstrumenter({
+  const instrumenter: CustomInstrumenter = opts.instrumenter ?? createInstrumenter({
     coverageGlobalScopeFunc: false,
     coverageGlobalScope: 'globalThis',
     preserveComments: true,
