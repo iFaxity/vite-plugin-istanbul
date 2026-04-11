@@ -1,3 +1,7 @@
+const VUE_STYLE_ID_REGEX = /\?vue&type=style/;
+const VUE_SCRIPT_ID_REGEX = /\?vue&type=script/;
+const VUE_COMPOSITION_API_REGEX = /import _sfc_main from/;
+
 /** # Fix for vue Single-File Components instrumentation in build mode. (cf issue #96)
  *
  * ## Option API SFC splits file into 2
@@ -17,23 +21,24 @@
  * - Option API: starts with `\nconst _sfc_main = {\n`
  *
  */
-export function canInstrumentChunk(id: string, srcCode: string): boolean {
-  const is1stChunk = id.endsWith('.vue');
-  const is2ndChunk = /\?vue&type=style/.test(id);
-  const is3rdChunk = /\?vue&type=script/.test(id);
-  const isCompositionAPI = /import _sfc_main from/.test(srcCode);
-  if (is2ndChunk) {
+export function canInstrumentChunk(id: string, srcCode: string) {
+  if (VUE_STYLE_ID_REGEX.test(id)) {
     // never instrument type=style
     return false;
   }
-  if (is3rdChunk) {
+
+  if (VUE_SCRIPT_ID_REGEX.test(id)) {
     // always instrument type=script
     return true;
   }
-  if (is1stChunk) {
+
+  if (id.endsWith('.vue')) {
+    const isCompositionAPI = VUE_COMPOSITION_API_REGEX.test(srcCode);
+
     // instrument 1st chunk only if it's Option API
     return !isCompositionAPI;
   }
+
   // instrument if not a vue chunk
   return true;
 }
