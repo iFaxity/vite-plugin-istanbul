@@ -6,7 +6,7 @@ import type { ExistingRawSourceMap } from 'rollup';
 import TestExclude from 'test-exclude';
 import { createLogger, Plugin, TransformResult } from 'vite';
 
-import { createIdentitySourceMap } from './source-map';
+import { createCompleteSourceMap, createIdentitySourceMap } from './source-map';
 import { canInstrumentChunk } from './vue-sfc';
 
 const { yellow } = picocolors;
@@ -242,10 +242,47 @@ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
       const filename = resolveFilename(id);
 
       if (testExclude.shouldInstrument(filename)) {
-        // Instrument code using the combined source map of previous plugins
-        const combinedSourceMap = sanitizeSourceMap(
-          this.getCombinedSourcemap()
-        );
+        // Get the raw combined source map before sanitization to preserve sourcesContent
+        const rawCombinedSourceMap = this.getCombinedSourcemap();
+        const combinedSourceMap = sanitizeSourceMap(rawCombinedSourceMap);
+
+        // For Vue SFC files, create a complete source map that covers all compiled lines.
+        // Vite's source map only covers the <script> block, leaving template-generated code
+        // (render function) unmapped, which causes Istanbul to report 0% coverage.
+        const isVueSFC = id.endsWith('.vue') || /\?vue&type=script/.test(id);
+
+        if (isVueSFC) {
+          let originalSource: string | null = null;
+          if (
+            rawCombinedSourceMap.sourcesContent &&
+            rawCombinedSourceMap.sourcesContent[0]
+          ) {
+            originalSource = rawCombinedSourceMap.sourcesContent[0];
+          }
+
+          const completeSourceMap = sanitizeSourceMap(
+            createCompleteSourceMap(filename, srcCode, originalSource, {
+              file: combinedSourceMap.file,
+              sourceRoot: combinedSourceMap.sourceRoot,
+            })
+          );
+
+          const code = instrumenter.instrumentSync(
+            srcCode,
+            filename,
+            completeSourceMap
+          );
+          const map = instrumenter.lastSourceMap();
+
+          const fileCoverage = instrumenter.fileCoverage;
+          if (opts.onCover) {
+            opts.onCover(filename, fileCoverage);
+          }
+          return { code, map } as TransformResult;
+        }
+
+        // For non-Vue files, use the two-pass instrumentation approach
+        // to ensure proper source map handling
         const code = instrumenter.instrumentSync(
           srcCode,
           filename,
