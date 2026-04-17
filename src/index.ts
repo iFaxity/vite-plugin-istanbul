@@ -38,6 +38,7 @@ export interface IstanbulPluginOptions {
   cwd?: string;
   nycrcPath?: string;
   generatorOpts?: GeneratorOptions;
+  coverageVariable?: string;
   onCover?: (fileName: string, fileCoverage: object) => void;
   /**
    * Custom instrumenter to use instead of istanbul-lib-instrument.
@@ -145,6 +146,7 @@ export default function istanbulPlugin(
     autoWrap: true,
     esModules: true,
     compact: false,
+    coverageVariable: opts.coverageVariable ?? '__coverage__',
     generatorOpts: { ...opts?.generatorOpts },
   });
 
