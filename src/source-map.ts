@@ -1,5 +1,16 @@
 import * as espree from 'espree';
+import type { ExistingRawSourceMap } from 'rollup';
 import { SourceMapGenerator, StartOfSourceMap } from 'source-map';
+
+export function sanitizeSourceMap(
+  rawSourceMap: ExistingRawSourceMap
+): ExistingRawSourceMap {
+  // Delete sourcesContent since it is optional and if it contains process.env.NODE_ENV vite will break when trying to replace it
+  const { sourcesContent, ...sourceMap } = rawSourceMap;
+
+  // JSON parse/stringify trick required for istanbul to accept the SourceMap
+  return JSON.parse(JSON.stringify(sourceMap));
+}
 
 // Create a source map which always maps to the same line and column
 export function createIdentitySourceMap(
