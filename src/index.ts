@@ -1,8 +1,7 @@
 import type { GeneratorOptions } from '@babel/generator';
 import { loadNycConfig } from '@istanbuljs/load-nyc-config';
-import { createInstrumenter } from 'istanbul-lib-instrument';
+import { createInstrumenter, type RawSourceMap } from 'istanbul-lib-instrument';
 import picocolors from 'picocolors';
-import type { ExistingRawSourceMap } from 'rollup';
 import TestExclude from 'test-exclude';
 import { createLogger, Plugin, TransformResult } from 'vite';
 
@@ -22,8 +21,12 @@ declare global {
  * (e.g., oxc-coverage-instrument) while keeping the Istanbul coverage format.
  */
 export interface CustomInstrumenter {
-  instrumentSync(code: string, filename: string, inputSourceMap?: ExistingRawSourceMap): string;
-  lastSourceMap(): ExistingRawSourceMap | null;
+  instrumentSync(
+    code: string,
+    filename: string,
+    inputSourceMap?: RawSourceMap
+  ): string;
+  lastSourceMap(): RawSourceMap | null;
   fileCoverage: object;
 }
 
@@ -70,9 +73,7 @@ const PLUGIN_NAME = 'vite:istanbul';
 const MODULE_PREFIX = '/@modules/';
 const NULL_STRING = '\0';
 
-function sanitizeSourceMap(
-  rawSourceMap: ExistingRawSourceMap
-): ExistingRawSourceMap {
+function sanitizeSourceMap(rawSourceMap: RawSourceMap): RawSourceMap {
   // Delete sourcesContent since it is optional and if it contains process.env.NODE_ENV vite will break when trying to replace it
   const { sourcesContent, ...sourceMap } = rawSourceMap;
 
@@ -137,16 +138,18 @@ export default function istanbulPlugin(
 
   const logger = createLogger('warn', { prefix: 'vite-plugin-istanbul' });
   let testExclude: TestExclude;
-  const instrumenter: CustomInstrumenter = opts.instrumenter ?? createInstrumenter({
-    coverageGlobalScopeFunc: false,
-    coverageGlobalScope: 'globalThis',
-    preserveComments: true,
-    produceSourceMap: true,
-    autoWrap: true,
-    esModules: true,
-    compact: false,
-    generatorOpts: { ...opts?.generatorOpts },
-  });
+  const instrumenter: CustomInstrumenter =
+    opts.instrumenter ??
+    createInstrumenter({
+      coverageGlobalScopeFunc: false,
+      coverageGlobalScope: 'globalThis',
+      preserveComments: true,
+      produceSourceMap: true,
+      autoWrap: true,
+      esModules: true,
+      compact: false,
+      generatorOpts: { ...opts?.generatorOpts },
+    });
 
   // Lazy check the active status of the plugin
   // as this gets fed after config is fully resolved

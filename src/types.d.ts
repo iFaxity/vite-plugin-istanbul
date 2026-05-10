@@ -1,14 +1,27 @@
 declare module 'istanbul-lib-instrument' {
-  import { ExistingRawSourceMap } from 'rollup';
   import { GeneratorOptions } from 'babel__generator';
+
+  /**
+   * Subset of the source map type used by rollup / rolldown.
+   * Defined locally so the package doesn't need to depend on either.
+   */
+  export interface RawSourceMap {
+    version: number;
+    sources: string[];
+    names: string[];
+    sourceRoot?: string;
+    sourcesContent?: string[];
+    mappings: string;
+    file: string;
+  }
 
   interface Instrumenter {
     instrumentSync(
       code: string,
       filename: string,
-      inputSourceMap?: ExistingRawSourceMap
+      inputSourceMap?: RawSourceMap
     ): string;
-    lastSourceMap(): ExistingRawSourceMap | null;
+    lastSourceMap(): RawSourceMap | null;
     fileCoverage: object;
   }
 
