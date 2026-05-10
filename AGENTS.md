@@ -8,7 +8,7 @@ Follow repository conventions exactly unless the user explicitly asks otherwise.
 - Package manager: `pnpm` (lockfile: `pnpm-lock.yaml`)
 - Runtime baseline: Node from `.node-version` (`v24.14.0`)
 - Language: TypeScript (`strict: true`)
-- Build tool: `unbuild`
+- Build tool: `tsdown`
 - Primary source directory: `src/`
 - Output directory: `dist/`
 - CI currently validates build only (no test job configured)
@@ -24,7 +24,7 @@ Follow repository conventions exactly unless the user explicitly asks otherwise.
 ### Build
 
 - Standard build: `pnpm run build`
-- Dev/stub build: `pnpm run dev`
+- Watch/dev build: `pnpm run dev`
 - Prepublish path: `pnpm run prepublishOnly` (runs build)
 
 ### Lint / Formatting

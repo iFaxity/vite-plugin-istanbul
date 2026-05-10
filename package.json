@@ -8,20 +8,20 @@
   ],
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs",
       "require": null
     }
   },
   "scripts": {
-    "dev": "unbuild --stub",
-    "build": "unbuild",
+    "dev": "tsdown --watch",
+    "build": "tsdown",
     "prettier": "prettier --check .",
     "format": "prettier --write .",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "pnpm run build",
     "prepare": "husky"
   },
   "homepage": "https://github.com/iFaxity/vite-plugin-istanbul",
@@ -67,9 +67,8 @@
     "husky": "9.1.7",
     "lint-staged": "16.3.2",
     "prettier": "3.8.1",
-    "rollup": "4.59.0",
-    "typescript": "5.9.3",
-    "unbuild": "3.6.1"
+    "tsdown": "0.22.0",
+    "typescript": "6.0.3"
   },
   "packageManager": "pnpm@10.30.3+sha512.c961d1e0a2d8e354ecaa5166b822516668b7f44cb5bd95122d590dd81922f606f5473b6d23ec4a5be05e7fcd18e8488d47d978bbe981872f1145d06e9a740017"
 }
