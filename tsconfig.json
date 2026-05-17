@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "lib": ["dom"],
     "rootDir": "src",
     "outDir": "dist",
@@ -11,7 +11,8 @@
     "declarationMap": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "erasableSyntaxOnly": true
   },
   "include": ["src/*"],
   "exclude": ["**/node_modules"]
