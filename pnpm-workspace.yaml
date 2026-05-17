@@ -9,7 +9,3 @@ auditLevel: high
 
 # Ensures every file in the pnpm store matches its original hash.
 verifyStoreIntegrity: true
-
-# Only run verified package scripts
-onlyBuiltDependencies:
-  - esbuild
