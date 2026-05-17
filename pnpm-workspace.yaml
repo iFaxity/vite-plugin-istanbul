@@ -3,6 +3,9 @@
 # without it (preventing local-machine hijack publishes).
 trustPolicy: no-downgrade
 
+trustPolicyExclude:
+  - semver@6.3.1
+
 # This causes the install to fail if any vulnerabilities are found
 # that meet your defined level.
 auditLevel: high
