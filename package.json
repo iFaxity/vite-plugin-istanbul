@@ -54,7 +54,7 @@
     "test-exclude": "^8.0.0"
   },
   "peerDependencies": {
-    "vite": ">=4"
+    "vite": ">=7"
   },
   "devDependencies": {
     "@commitlint/cli": "21.0.1",
