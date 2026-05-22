@@ -1,6 +1,16 @@
 import * as espree from 'espree';
 import { SourceMapGenerator, StartOfSourceMap } from 'source-map';
 
+export type RawSourceMap = {
+  version: number;
+  sources: string[];
+  names: string[];
+  sourceRoot?: string;
+  sourcesContent?: string[];
+  mappings: string;
+  file: string;
+};
+
 // Create a source map which always maps to the same line and column
 export function createIdentitySourceMap(
   file: string,

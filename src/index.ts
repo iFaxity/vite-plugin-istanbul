@@ -1,11 +1,15 @@
 import type { GeneratorOptions } from '@babel/generator';
 import { loadNycConfig } from '@istanbuljs/load-nyc-config';
-import { createInstrumenter, type RawSourceMap } from 'istanbul-lib-instrument';
+import { createInstrumenter } from 'istanbul-lib-instrument';
 import picocolors from 'picocolors';
 import TestExclude from 'test-exclude';
 import { createLogger, Plugin, TransformResult } from 'vite';
 
-import { createCompleteSourceMap, createIdentitySourceMap } from './source-map';
+import {
+  createCompleteSourceMap,
+  createIdentitySourceMap,
+  type RawSourceMap,
+} from './source-map';
 import { canInstrumentChunk } from './vue-sfc';
 
 const { yellow } = picocolors;
