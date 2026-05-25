@@ -44,7 +44,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/generator": "^7.29.1",
+    "@babel/generator": "^7.29.7",
     "@istanbuljs/load-nyc-config": "^1.1.0",
     "@types/babel__generator": "7.27.0",
     "espree": "^11.2.0",
