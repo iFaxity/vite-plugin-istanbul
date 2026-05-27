@@ -5,7 +5,7 @@ declare module 'istanbul-lib-instrument' {
    * Subset of the source map type used by rollup / rolldown.
    * Defined locally so the package doesn't need to depend on either.
    */
-  export interface RawSourceMap {
+  interface RawSourceMap {
     version: number;
     sources: string[];
     names: string[];
