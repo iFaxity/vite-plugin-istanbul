@@ -45,6 +45,7 @@ Creates the vite plugin from a set of optional plugin options.
 | `cypress`              | `boolean`          | Optional boolean to change the environment variable to **CYPRESS_COVERAGE** instead of **VITE_COVERAGE**. For ease of use with `@cypress/code-coverage`.                                                                                                                                                              |
 | `checkProd`            | `boolean`          | Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.                                                                                                                                                           |
 | `forceBuildInstrument` | `boolean`          | Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.                                                                                                                                                                                                                       |
+| `verbose`              | `boolean`          | Optional boolean to log why instrumentation is enabled or skipped, and which files are instrumented. Defaults to false.                                                                                                                                                                                               |
 | `nycrcPath`            | `string`           | Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.                                                                                                                                                           |
 | `generatorOpts`        | `GeneratorOptions` | A set of generator options that are passed down to the Babel transformer. See [here](https://babeljs.io/docs/babel-generator#options) for reference. Defaults to empty object.                                                                                                                                        |
 | `instrumenter`         | `CustomInstrumenter` | Optional custom instrumenter used instead of `istanbul-lib-instrument`. Must implement `instrumentSync(code, filename, inputSourceMap?)`, `lastSourceMap()` and `fileCoverage`. Lets you swap in a faster instrumenter such as [`oxc-coverage-instrument`](https://github.com/fallow-rs/oxc-coverage-instrument). |
@@ -57,6 +58,8 @@ As of v2.1.0 you can toggle the coverage off by setting the env variable `VITE_C
 This plugin also requires the Vite configuration [build.sourcemap](https://vitejs.dev/config/#build-sourcemap) to be set to either **true**, **'inline'**, **'hidden'**.
 But the plugin will automatically default to **true** if it is missing in order to give accurate code coverage.
 The plugin will notify when this happens in order for a developer to fix it. This notification will show even when the plugin is disabled by e.g `opts.requireEnv`, `VITE_COVERAGE=false`. This is due to a limitation of the API for this kind of feature.
+
+Set `verbose: true` to see why instrumentation is enabled or skipped during config resolution, plus which files are instrumented or filtered out by the plugin.
 
 Examples
 --------------------------
@@ -76,6 +79,7 @@ export default {
       exclude: ['node_modules', 'test/'],
       extension: ['.js', '.ts', '.vue'],
       requireEnv: true,
+      verbose: true,
     }),
   ],
 };
