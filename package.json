@@ -65,7 +65,7 @@
     "@types/node": "25.9.1",
     "@types/ws": "8.18.1",
     "husky": "9.1.7",
-    "lint-staged": "17.0.7",
+    "lint-staged": "17.1.0",
     "prettier": "3.8.3",
     "tsdown": "0.22.12",
     "typescript": "6.0.3"
