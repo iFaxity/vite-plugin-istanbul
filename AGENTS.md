@@ -11,7 +11,7 @@ Follow repository conventions exactly unless the user explicitly asks otherwise.
 - Build tool: `tsdown`
 - Primary source directory: `src/`
 - Output directory: `dist/`
-- CI currently validates build only (no test job configured)
+- CI validates build and runs the Vitest suite
 
 ## Setup Commands
 
@@ -37,19 +37,15 @@ Follow repository conventions exactly unless the user explicitly asks otherwise.
 
 ### Tests
 
-- There is currently no test script in `package.json`.
-- There are currently no `test/` or `tests/` directories in this repo.
-- CI (`.github/workflows/build.yml`) does not execute tests.
+- Test runner: Vitest
+- Full suite: `pnpm run test`
+- Tests are colocated with the source they cover (`src/*.test.ts`)
+- CI (`.github/workflows/build.yml`) runs the suite on every PR
 
 ### Running a Single Test (Important)
 
-- Not available right now because no test framework is configured.
-- If you add a test framework, add both of these scripts immediately:
-  - A full suite command (example: `test`)
-  - A single-test command by file/name (example patterns below)
-- Example patterns for future use (do not assume they exist yet):
-  - Vitest file: `pnpm vitest run path/to/file.test.ts`
-  - Vitest by test name: `pnpm vitest run -t "name"`
+- By file: `pnpm run test:file src/source-map.test.ts`
+- By test name: `pnpm run test:file -t "maps a script chunk"`
 
 ## CI/CD and Release Workflow
 
