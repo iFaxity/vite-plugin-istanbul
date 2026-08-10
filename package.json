@@ -19,6 +19,8 @@
   "scripts": {
     "dev": "tsdown --watch",
     "build": "tsdown",
+    "test": "vitest run",
+    "test:file": "vitest run",
     "prettier": "prettier --check .",
     "format": "prettier --write .",
     "prepublishOnly": "pnpm run build",
@@ -68,7 +70,8 @@
     "lint-staged": "17.3.0",
     "prettier": "3.9.6",
     "tsdown": "0.22.14",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@11.1.2+sha512.415a1cc25974731e75455c1468371be74c5aa5fb7621b50d4056d222451609f11412f23fd602e6169f1e060466641f798597e1be961a10688836a67b16569499"
 }
