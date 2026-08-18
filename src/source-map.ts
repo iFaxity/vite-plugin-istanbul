@@ -39,7 +39,8 @@ export function createCompleteSourceMap(
   file: string,
   source: string,
   originalSource: string | null,
-  option: StartOfSourceMap
+  option: StartOfSourceMap,
+  originalLineOffset = 0
 ) {
   const gen = new SourceMapGenerator(option);
   const lines = source.split('\n');
@@ -62,7 +63,10 @@ export function createCompleteSourceMap(
 
     tokens.forEach((token) => {
       // Map each generated token back to the closest original line
-      const originalLine = Math.min(lineIndex + 1, originalLines);
+      const originalLine = Math.min(
+        lineIndex + 1 + originalLineOffset,
+        originalLines
+      );
       gen.addMapping({
         source: file,
         original: { line: originalLine, column: 0 },

@@ -10,7 +10,7 @@ import {
   createIdentitySourceMap,
   type RawSourceMap,
 } from './source-map';
-import { canInstrumentChunk } from './vue-sfc';
+import { canInstrumentChunk, getScriptBlockLineOffset } from './vue-sfc';
 
 const { yellow } = picocolors;
 
@@ -267,11 +267,24 @@ To hide this message set build.sourcemap to true, 'inline' or 'hidden'.`)}`
             originalSource = rawCombinedSourceMap.sourcesContent[0];
           }
 
+          // Only the script chunk is offset; the whole-file chunk already
+          // starts at line 1 of the SFC.
+          const originalLineOffset =
+            originalSource && /\?vue&type=script/.test(id)
+              ? getScriptBlockLineOffset(originalSource, filename)
+              : 0;
+
           const completeSourceMap = sanitizeSourceMap(
-            createCompleteSourceMap(filename, srcCode, originalSource, {
-              file: combinedSourceMap.file,
-              sourceRoot: combinedSourceMap.sourceRoot,
-            })
+            createCompleteSourceMap(
+              filename,
+              srcCode,
+              originalSource,
+              {
+                file: combinedSourceMap.file,
+                sourceRoot: combinedSourceMap.sourceRoot,
+              },
+              originalLineOffset
+            )
           );
 
           const code = instrumenter.instrumentSync(

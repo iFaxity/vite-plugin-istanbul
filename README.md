@@ -20,6 +20,12 @@ or if you use yarn
 
 `yarn add -D vite-plugin-istanbul`
 
+Vue projects should also have `@vue/compiler-sfc` available — it ships with `vue`, so this
+is normally already the case. It is an optional peer dependency, used to locate the
+`<script>` block of a Single-File Component so coverage is reported against the right lines.
+Without it, SFC coverage falls back to the previous behaviour; other project types are
+unaffected either way.
+
 API
 --------------------------
 
