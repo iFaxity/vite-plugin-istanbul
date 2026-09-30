@@ -23,7 +23,10 @@ type TransformHook = (
   options?: { ssr?: boolean }
 ) => unknown | Promise<unknown>;
 
-async function createPlugin(options: IstanbulPluginOptions = {}) {
+async function createPlugin(
+  options: IstanbulPluginOptions = {},
+  coverage = 'true'
+) {
   const plugin = istanbulPlugin({
     include: 'src/example.ts',
     requireEnv: true,
@@ -39,7 +42,7 @@ async function createPlugin(options: IstanbulPluginOptions = {}) {
 
   if (typeof plugin.configResolved === 'function') {
     plugin.configResolved({
-      env: { VITE_COVERAGE: 'true' },
+      env: { VITE_COVERAGE: coverage },
       envPrefix: 'VITE_',
       isProduction: false,
     } as ResolvedConfig);
@@ -59,6 +62,20 @@ function getCode(result: unknown) {
 }
 
 describe('SSR transforms', () => {
+  it('keeps disabled coverage off when SSR instrumentation is enabled', async () => {
+    const plugin = await createPlugin({ enableInSSR: true }, 'false');
+    const transform = plugin.transform as TransformHook;
+
+    const result = await transform.call(
+      transformContext,
+      source,
+      'src/example.ts',
+      { ssr: true }
+    );
+
+    expect(result).toBeUndefined();
+  });
+
   it('keeps SSR instrumentation disabled by default', async () => {
     const plugin = await createPlugin();
     const transform = plugin.transform as TransformHook;
