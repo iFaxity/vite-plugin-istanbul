@@ -45,6 +45,7 @@ Creates the vite plugin from a set of optional plugin options.
 | `cypress`              | `boolean`          | Optional boolean to change the environment variable to **CYPRESS_COVERAGE** instead of **VITE_COVERAGE**. For ease of use with `@cypress/code-coverage`.                                                                                                                                                              |
 | `checkProd`            | `boolean`          | Optional boolean to enforce the plugin to skip instrumentation for production environments. Looks at Vite's **isProduction** key from the `ResolvedConfig`.                                                                                                                                                           |
 | `forceBuildInstrument` | `boolean`          | Optional boolean to enforce the plugin to add instrumentation in build mode. Defaults to false.                                                                                                                                                                                                                       |
+| `enableInSSR`          | `boolean`          | Optional boolean to add instrumentation during SSR transforms, such as Vitest browser/source coverage transforms. Defaults to false.                                                                                                                                                                                   |
 | `nycrcPath`            | `string`           | Path to specific nyc config to use instead of automatically searching for a nycconfig. This parameter is just passed down to `@istanbuljs/load-nyc-config`.                                                                                                                                                           |
 | `generatorOpts`        | `GeneratorOptions` | A set of generator options that are passed down to the Babel transformer. See [here](https://babeljs.io/docs/babel-generator#options) for reference. Defaults to empty object.                                                                                                                                        |
 | `instrumenter`         | `CustomInstrumenter` | Optional custom instrumenter used instead of `istanbul-lib-instrument`. Must implement `instrumentSync(code, filename, inputSourceMap?)`, `lastSourceMap()` and `fileCoverage`. Lets you swap in a faster instrumenter such as [`oxc-coverage-instrument`](https://github.com/fallow-rs/oxc-coverage-instrument). |
@@ -57,6 +58,17 @@ As of v2.1.0 you can toggle the coverage off by setting the env variable `VITE_C
 This plugin also requires the Vite configuration [build.sourcemap](https://vitejs.dev/config/#build-sourcemap) to be set to either **true**, **'inline'**, **'hidden'**.
 But the plugin will automatically default to **true** if it is missing in order to give accurate code coverage.
 The plugin will notify when this happens in order for a developer to fix it. This notification will show even when the plugin is disabled by e.g `opts.requireEnv`, `VITE_COVERAGE=false`. This is due to a limitation of the API for this kind of feature.
+
+Compatibility
+--------------------------
+
+This branch is expected to work with Vite versions matching the peer dependency range (`>=7`). The current lockfile and CI path install Vite 8.x; older Vite majors are not actively developed on this branch.
+
+CI uses the Node version pinned in `.node-version`. As of June 2026, Vite 8 declares Node `^20.19.0 || >=22.12.0`, and the active Node LTS release lines are Node 22 and Node 24.
+
+### Vitest and SSR transforms
+
+Vitest can ask Vite plugins to transform test modules in SSR mode. The plugin keeps SSR instrumentation disabled by default for backward compatibility; set `enableInSSR: true` in test-only Vite config when coverage instrumentation must run for that path.
 
 Examples
 --------------------------
