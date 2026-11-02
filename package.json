@@ -67,7 +67,7 @@
     "@types/ws": "8.18.1",
     "husky": "9.1.7",
     "lint-staged": "17.5.1",
-    "prettier": "3.9.9",
+    "prettier": "3.9.10",
     "tsdown": "0.23.0",
     "typescript": "7.0.2",
     "vitest": "4.1.11"
