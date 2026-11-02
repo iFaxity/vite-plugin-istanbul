@@ -64,7 +64,7 @@
     "@semantic-release/changelog": "7.0.0",
     "@semantic-release/git": "11.0.1",
     "@types/node": "26.6.6",
-    "@types/ws": "8.18.1",
+    "@types/ws": "8.18.2",
     "husky": "9.1.7",
     "lint-staged": "17.5.1",
     "prettier": "3.9.10",
